@@ -1,0 +1,955 @@
+//variable for posts
+let posts = [];
+
+document.addEventListener("DOMContentLoaded", async () => {
+    handleHashChange();
+    window.addEventListener('hashchange', handleHashChange);
+    navigateTo(window.location.hash);
+});
+
+window.addEventListener("hashchange", () => {
+  navigateTo(window.location.hash);
+});
+//handle hash change
+function navigateTo(hash) {
+  switch (hash) {
+      case "#/signup":
+          SignupPage();
+          break;
+      case "#/login":
+          LoginPage();
+          break;
+      case "#/dashboard":
+          DashboardPage();
+          break;    
+      case "#/contact":
+          ContactPage();
+          break;
+      case "#/about":
+          AboutPage();
+          break;
+      case "#/trips":
+          TripsPage();
+          break;
+      case "#/create-post":
+          CreatePostPage();
+          break;
+      case "#/profile":
+            ProfilePage();
+            break;
+      case "#/chats":
+            ChatsPage();
+            break;
+      case "#/editProfile":
+            EditProfilePage();
+            break;
+      case hash.match(/#\/post\/.*/g)?.[0]:
+        PostDetailsPage();
+        break;
+      default:
+          HomePage();
+          break;
+  }
+}
+//load content on index.html
+function loadPage(content) {
+  const app = document.getElementById("app");
+  app.innerHTML = content;
+}
+
+//homepage
+function HomePage() {
+  const home = `    <div id="homepage" class="page bg-cover bg-center bg-no-repeat min-h-screen" style="background-image: url('./public/img/bg-blue.svg')">
+  <!-- Header starts -->
+   <nav class="flex items-center justify-center bg-cover px-4 py-2">
+       <div class="flex items-center justify-center lg:my-0 my-4 bg-black/70 rounded-lg lg:rounded-3xl lg:justify-between max-w-7xl w-full">
+           <a href="#/" class="w-[80%] lg:w-[25%] lg:py-0 py-4"><img src="./public/img/logo.png" /></a>
+           <div class="hidden lg:flex items-center px-4 py-4 w-[70%] justify-between space-x-4 text-white text-xl">
+               <a href="#/trips" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">All Trips</a>
+               <a href="#/about" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">About</a>
+               <a href="#/contact" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Contact Us</a>
+               <a href="#/signup" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Signup</a>
+               <a href="#/login" class="bg-[#4facf7] px-4 py-1 rounded-xl hover:bg-cyan-700 ease-in-out duration-400 cursor-pointer">Login</a>
+           </div>
+       </div>
+   </nav>
+   <!-- Header ends -->
+   <!-- Hero Section starts  -->
+   <div class="flex items-center justify-center px-4">
+       <div class="flex flex-col lg:flex-row text-white items-center justify-center max-w-7xl w-full lg:my-8">
+           <div class="flex items-center w-[90%] lg:w-[60%] min-h-72">
+               <div class="flex flex-col space-y-6">
+                   <div class="text-5xl font-medium my-6">Explore Beyond Boundaries - Your Journey Awaits!</div>
+                   <div class="text-xl">Discover the Treasures of Travel"</div>
+                   <div>
+                       <a href="#/login" class="border-2 border-white hover:bg-white hover:text-black ease-in-out duration-500 cursor-pointer font-medium px-4 py-2 rounded-3xl my-6">Post your adventure</a>
+                   </div>
+                   <div class="text-xl font-medium mt-6 mb-4">Follow us</div>
+                   <div class="flex space-x-4 items-center justify-start">
+                       <a href="https://facebook.com" class="text-3xl hover:text-cyan-500 hover:scale-105 ease-in-out duration-500"><ion-icon name="logo-facebook"></ion-icon></a>
+                       <a href="https://twitter.com" class="text-3xl hover:text-cyan-500 hover:scale-105 ease-in-out duration-500"><ion-icon name="logo-twitter"></ion-icon></a>
+                       <a href="https://instagram" class="text-3xl hover:text-cyan-500 hover:scale-105 ease-in-out duration-500"><ion-icon name="logo-instagram"></ion-icon></a>
+                       <a href="https://reddit.com" class="text-3xl hover:text-cyan-500 hover:scale-105 ease-in-out duration-500"><ion-icon name="logo-reddit"></ion-icon></a>
+                   </div>
+               </div>
+           </div>
+               <div class="flex items-center justify-center w-[90%] lg:w-[40%] lg:min-h-96 overflow-hidden">
+                   <img class="h-full w-full" src="./public/img/hero1.png" />
+               </div>
+       </div>
+   </div>
+</div>
+<!-- Hero Section ends -->
+
+</div>`;
+  loadPage(home);
+}
+//about us page
+function AboutPage() {
+  const about = `<div id="" class="page bg-cover bg-center bg-no-repeat min-h-screen" style="background-image: url('./public/img/bg-blue.svg')">
+  <!-- Header starts -->
+   <nav class="flex items-center justify-center bg-cover px-4 py-2">
+       <div class="flex items-center justify-center lg:my-0 my-4 bg-black/70 rounded-lg lg:rounded-3xl lg:justify-between max-w-7xl w-full">
+           <a href="#/" class="w-[80%] lg:w-[25%] lg:py-0 py-4"><img src="./public/img/logo.png" /></a>
+           <div class="hidden lg:flex items-center px-4 py-4 w-[70%] justify-between space-x-4 text-white text-xl">
+               <a href="#/trips" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">All Trips</a>
+               <a href="#/about" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">About</a>
+               <a href="#/contact" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Contact Us</a>
+               <a href="#/signup" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Signup</a>
+               <a href="#/login" class="bg-[#4facf7] px-4 py-1 rounded-xl hover:bg-cyan-700 ease-in-out duration-400 cursor-pointer">Login</a>
+           </div>
+       </div>
+   </nav>
+   <!-- Header ends -->
+    <div class="flex items-center justify-center text-2xl text-[#4facf7] bg-white px-2 py-1 rounded-lg font-bold ">About Us</div>
+   </div>`;
+  loadPage(about);
+}
+//contact us page
+function ContactPage() {
+  const contact = `<div id="" class="page bg-cover bg-center bg-no-repeat min-h-screen" style="background-image: url('./public/img/bg-blue.svg')">
+  <!-- Header starts -->
+   <nav class="flex items-center justify-center bg-cover px-4 py-2">
+       <div class="flex items-center justify-center lg:my-0 my-4 bg-black/70 rounded-lg lg:rounded-3xl lg:justify-between max-w-7xl w-full">
+           <a href="#/" class="w-[80%] lg:w-[25%] lg:py-0 py-4"><img src="./public/img/logo.png" /></a>
+           <div class="hidden lg:flex items-center px-4 py-4 w-[70%] justify-between space-x-4 text-white text-xl">
+               <a href="#/trips" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">All Trips</a>
+               <a href="#/about" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">About</a>
+               <a href="#/contact" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Contact Us</a>
+               <a href="#/signup" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Signup</a>
+               <a href="#/login" class="bg-[#4facf7] px-4 py-1 rounded-xl hover:bg-cyan-700 ease-in-out duration-400 cursor-pointer">Login</a>
+           </div>
+       </div>
+   </nav>
+   <!-- Header ends -->
+   <div class="flex items-center justify-center text-2xl text-[#4facf7] bg-white px-2 py-1 rounded-lg font-bold ">Contact Us</div>
+   </div>`;
+  loadPage(contact);
+}
+//trips page
+function TripsPage() {
+  const trips = `<div id="" class="page bg-cover bg-center bg-no-repeat min-h-screen" style="background-image: url('./public/img/bg-blue.svg')">
+  <!-- Header starts -->
+   <nav class="flex items-center justify-center bg-cover px-4 py-2">
+       <div class="flex items-center justify-center lg:my-0 my-4 bg-black/70 rounded-lg lg:rounded-3xl lg:justify-between max-w-7xl w-full">
+           <a href="#/" class="w-[80%] lg:w-[25%] lg:py-0 py-4"><img src="./public/img/logo.png" /></a>
+           <div class="hidden lg:flex items-center px-4 py-4 w-[70%] justify-between space-x-4 text-white text-xl">
+               <a href="#/trips" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">All Trips</a>
+               <a href="#/about" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">About</a>
+               <a href="#/contact" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Contact Us</a>
+               <a href="#/signup" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Signup</a>
+               <a href="#/login" class="bg-[#4facf7] px-4 py-1 rounded-xl hover:bg-cyan-700 ease-in-out duration-400 cursor-pointer">Login</a>
+           </div>
+       </div>
+   </nav>
+   <!-- Header ends -->
+   <div class="flex items-center justify-center text-2xl text-[#4facf7] bg-white px-2 py-1 rounded-lg font-bold ">All Trips</div>
+   </div>`;
+  loadPage(trips);
+}
+//signup page
+function SignupPage() {
+  const signup = `    <div class="bg-cover bg-center bg-no-repeat min-h-screen" style="background-image: url('../src/img/bg-white.svg')">
+  <!-- Signup Section starts  -->
+  <div class="flex items-center justify-center">
+      <div class="flex lg:flex-row flex-col-reverse items-center justify-between w-full">
+          <div class=" flex items-start justify-center bg-green-600 h-screen w-full lg:w-[30%]">
+              <div class="flex-col flex w-full items-center justify-center">
+                  <a href="#/" class="w-[80%] my-10">
+                      <img src="../img/logo.png" />
+                  </a>
+                  <div class="text-white text-2xl font-medium ">Signup for TrekTeller</div>
+                  <form class="w-[80%] px-10 py-6 lg:py-12 bg-white shadow-2xl shadow-gray-800 rounded-xl my-8">
+    <div class="text-lg my-2 font-medium text-gray-500">Username</div>
+    <input id="signupUsername" type="text" placeholder="username" class="w-full rounded border-2 border-gray-400 px-3 py-2 text-gray-500 focus:outline-none" />
+    <div class="text-lg my-2 font-medium text-gray-500">Password</div>
+    <input id="signupPassword" type="password" placeholder="**********" class="w-full rounded border-2 border-gray-400 px-3 py-2 text-gray-500 focus:outline-none" />
+    <div class="text-lg my-2 font-medium text-gray-500">Confirm Password</div>
+    <input id="confirmPassword" type="password" placeholder="**********" class="w-full rounded border-2 border-gray-400 px-3 py-2 text-gray-500 focus:outline-none" />
+    <div class="flex items-center justify-center">
+        <button type="button" onclick="signup()" class="bg-green-600 w-full py-2 rounded-xl text-white my-4 hover:bg-[#006ad5] ease-in-out duration-500 cursor-pointer">Signup</button>
+    </div>
+    <a href="#/login" class="text-green-600 text-center flex items-center justify-center hover:text-[#006ad5] hover:underline">Already have an account? Login</a>
+</form>
+              </div>
+          </div>
+          <div class="flex items-center justify-center lg:h-screen w-full lg:w-[70%] overflow-hidden bg-white">
+              <div class="flex-col flex items-center justify-center">
+                  <a href="#/" class="hover:text-black text-green-600 text-5xl font-bold text-center">Welcome to TrekTeller</a>
+                  <div class="my-2 text-gray-500 text-xl text-center">Marking Time with Memorable Journeys</div>
+                  <div class="lg:w-[50%] w-[60%]">
+                      <img class="" src="../img/signup.jpg"/>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- Signup Section ends -->
+</div>`;
+  loadPage(signup);
+}
+//login page
+function LoginPage() {
+  const login = `<div class="bg-cover bg-center bg-no-repeat min-h-screen" style="background-image: url('../src/img/bg-white.svg')">
+  <!-- Login Section starts  -->
+  <div class="flex items-center justify-center">
+      <div class="flex lg:flex-row flex-col-reverse items-center justify-between w-full">
+          <div class=" flex items-start justify-center bg-[#006ad5] h-screen w-full lg:w-[30%]">
+              <div class="flex-col flex w-full items-center justify-center">
+                  <a href="#/" class="w-[80%] my-16">
+                      <img src="../img/logo.png" />
+                  </a>
+                  <div class="text-white text-2xl font-medium ">Login to TrekTeller</div>
+                  <div class="text-xs text-gray-300">Credentials for demo</div>
+                  <div class="text-xs text-gray-300">Username: dristibhugun</div>
+                  <div class="text-xs text-gray-300">Password: dristi</div>
+                  <form class="w-[80%] px-10 py-6 lg:py-12 bg-white shadow-2xl shadow-gray-800 rounded-xl my-8">
+                      <div class="text-lg my-2 font-medium text-gray-500">Username</div>
+                      <input id="loginUsername" required type="text" placeholder="username" class="w-full rounded border-2 border-gray-400 px-3 py-2 text-gray-500   focus:outline-none" />
+                      <div class="text-lg my-2 font-medium text-gray-500">Password</div>
+                      <input id="loginPassword" required type="password" placeholder="**********" class="w-full rounded border-2 border-gray-400 px-3 py-2 text-gray-500   focus:outline-none" />
+                      <div class="flex items-center justify-center">
+                          <button type="button" onclick="login()" class="bg-[#006ad5] w-full py-2 rounded-xl text-white my-4 hover:bg-green-600 ease-in-out duration-500 cursor-pointer">Login</button>
+                      </div>
+                      <a href="#/signup" class="text-gray-500 text-center flex items-center justify-center hover:text-green-600 hover:underline">Don't have an account? Signup</a>
+                  </form>
+              </div>
+          </div>
+          <div class="flex items-center justify-center h-screen w-full lg:w-[70%] overflow-hidden bg-white">
+              <div class="flex-col flex items-center justify-center">
+                  <a href="#/" class="hover:text-black text-[#006ad5] text-5xl font-bold text-center">Welcome to TrekTeller</a>
+                  <div class="my-2 text-gray-500 text-xl text-center">Marking Time with Memorable Journeys</div>
+                  <div class="lg:w-[40%] w-[60%]">
+                      <img class="" src="../img/login.jpg"/>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- Login Section ends -->
+</div>`;
+  loadPage(login);
+}
+//dashboard page
+function DashboardPage() {
+  const dashboard = `    <div class="max-h-screen overflow-hidden">
+  <!-- Header starts -->
+   <nav class="flex items-center justify-center bg-cover bg-blue-900 h-16">
+       <div class="flex items-center justify-center lg:my-0 my-4  rounded-lg lg:rounded-3xl lg:justify-between max-w-7xl w-full">
+           <div class="w-[80%] lg:w-[25%] lg:py-0 py-4"><img src="../img/logo.png" /></div>
+           <div class="hidden lg:flex items-center px-4 py-4 w-[50%] justify-between space-x-4 text-white text-xl">
+               <a href="#/dashboard" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Dashboard</a>
+               <a href="#/create-post" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Post a Story</a>
+               <a href="#/chats" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Chats</a>
+               <a href="#/profile" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Profile</a>
+               <button type="button" onclick="logout()" class="bg-[#006ad5] px-4 py-1 rounded-xl hover:bg-cyan-700 ease-in-out duration-400 cursor-pointer">Logout</button>
+           </div>
+       </div>
+   </nav>
+  <!-- Header ends -->
+  <!-- Dashboard Section starts  -->
+  <div class="h-screen flex-col flex lg:flex-row">
+      <div class="bg-gray-100 lg:w-[20%] flex flex-col items-start justify-center px-6 border-r-4 border-blue-900">
+        <input type="text" placeholder="budget" id="filter_budget"/>
+        <Button onclick="filterPostsByBudget()">filter</Button>
+        <Button onclick="getAllDistinctLocations()">Get</Button>
+        </div>
+      <div id="posts-container" class="bg-gray-100 pt-4 pb-14 lg:w-[80%] min-h-screen flex flex-wrap items-center justify-center overflow-y-scroll scrollbar-hide">
+      </div>
+  </div>
+  
+  
+  <!-- Dashboard Section ends -->
+</div>`;
+  loadPage(dashboard);
+}
+async function PostDetailsPage(){
+    // get the current url
+    const tokens = window.location.href.split('/');
+    const postId = tokens[tokens.length - 1];
+    const post = posts.find(post => post._id === postId);
+    const postDetails = `
+    <div class="max-h-screen overflow-hidden">
+    <!-- Header starts -->
+     <nav class="flex items-center justify-center bg-cover bg-blue-900 h-16">
+         <div class="flex items-center justify-center lg:my-0 my-4  rounded-lg lg:rounded-3xl lg:justify-between max-w-7xl w-full">
+             <a href="#/dashboard" class="w-[80%] lg:w-[25%] lg:py-0 py-4"><img src="../img/logo.png" /></a>
+             <div class="hidden lg:flex items-center px-4 py-4 w-[50%] justify-between space-x-4 text-white text-xl">
+                <a href="#/dashboard" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Dashboard</a>
+                 <a href="#/create-post" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Post a Story</a>
+                 <a href="#/chats" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Chats</a>
+                 <a href="#/profile" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Profile</a>
+                 <button type="button" onclick="logout()" class="bg-[#006ad5] px-4 py-1 rounded-xl hover:bg-cyan-700 ease-in-out duration-400 cursor-pointer">Logout</button>
+             </div>
+         </div>
+     </nav>
+    <!-- Header ends -->
+    <!-- Post Section starts  -->
+    <div class="h-screen overflow-scroll flex-col items-center justify-start flex  bg-gray-200 pb-14">
+        <div class="lg:w-1/2 text-center flex flex-col items-center justify-center bg-gray-200 px-4">
+        <div class="bg-gray-100 h-60 w-full overflow-hidden">
+            <img src="${post.featured_image}" class="h-full w-full object-cover" />
+            </div>
+            <div class="text-5xl font-bold my-4">${post.title}</div>
+            <div class="flex items-center justify-around text-gray-500 font-medium space-x-4 my-2">
+                <div class="text-blue-900">${post.posted_by}</div>
+                <div class="">${post.date}</div>
+            </div>
+            <div class="flex space-x-4 w-full items-center justify-center my-4">
+                <div onclick="likePost()" class="text-red-600 hover:text-green-600"><ion-icon class="text-2xl text-red-600" name="thumbs-up-outline"></ion-icon> ${post.likes}</div>
+                <div class="bg-green-900 text-white px-3 py-1 rounded shadow-xl">$ ${post.budget}</div>
+                <div class="bg-yellow-700 text-white px-3 py-1 rounded shadow-xl">${post.location}</div>
+                <div class="bg-blue-900 text-white px-3 py-1 rounded shadow-xl">${post.days} days</div>
+            </div>
+            <div>${post.description}</div>
+            <div class="flex space-x-4 w-full items-center justify-center my-2">
+                    <input type="text" id="commentBox" class="w-1/2 border-2 border-gray-300 rounded-lg p-2 focus:outline-none" placeholder="Add a comment" />
+                    <button onclick="comment()" class="bg-blue-900 text-white px-2 py-1 rounded-lg hover:bg-green-700 ease-in-out duration-400">Comment</button>
+                </div>
+                <div class="flex flex-col items-center justify-start w-full">
+                ${post.comments.map(comment => `
+                <div class="flex w-full items-center justify-between border-b-2 border-gray-500">
+                <div class="text-xl text-gray-600">${comment.text}</div>
+                <div class="text-blue-700 text-sm">${comment.username}</div>
+                </div>
+                `
+                ).join('')}</div>
+        </div>
+    </div>
+    
+    
+    <!-- Post Section ends -->
+  </div>
+    `;
+    loadPage(postDetails);
+}
+
+filterPosts = [];
+function filterPostsByBudget() {
+    const budget = document.getElementById('filter_budget').value;
+    filterPosts = posts.filter(post => post.budget > budget);
+    console.log(filterPosts);
+    renderPosts(filterPosts);
+}
+const locationSet = new Set();
+function getAllDistinctLocations() {
+    const locations = posts.map(post => post.location);
+    console.log(new Set(locations));
+    return new Set(locations);
+}
+function filterPostsByLocation() {
+    const location = document.getElementById('filter_location').value;
+    filterPosts = posts.filter(post => post.location === location);
+    console.log(filterPosts);
+    renderPosts(filterPosts);
+}
+
+//create new post page
+function CreatePostPage() {
+  const createPost = `    <div class="max-h-screen overflow-hidden">
+  <!-- Header starts -->
+   <nav class="flex items-center justify-center bg-cover bg-blue-900 h-16">
+       <div class="flex items-center justify-center lg:my-0 my-4  rounded-lg lg:rounded-3xl lg:justify-between max-w-7xl w-full">
+           <a href="#/dashboard" class="w-[80%] lg:w-[25%] lg:py-0 py-4"><img src="../img/logo.png" /></a>
+           <div class="hidden lg:flex items-center px-4 py-4 w-[50%] justify-between space-x-4 text-white text-xl">
+               <a href="#/dashboard" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Dashboard</a>
+               <a href="#/create-post" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Post a Story</a>
+               <a href="#/chats" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Chats</a>
+               <a href="#/profile" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Profile</a>
+               <button type="button" onclick="logout()" class="bg-[#006ad5] px-4 py-1 rounded-xl hover:bg-cyan-700 ease-in-out duration-400 cursor-pointer">Logout</button>
+           </div>
+       </div>
+   </nav>
+  <!-- Header ends -->
+   <div class="flex items-center justify-center">
+      <div class="lg:w-1/2 shadow-xl rounded-xl my-6 py-8 px-6">
+          <form class="flex flex-col space-y-4">
+              <input id="title" type="text" class="w-full p-2 rounded-xl border-2 border-gray-300 text-gray-500 focus:outline-none" placeholder="Title of post" />
+              <div class="flex items-center justify-center space-x-4">
+                  <input id="days" type="number" class="w-1/2 p-2 rounded-xl border-2 border-gray-300 text-gray-500 focus:outline-none" placeholder="Days"/>
+                  <input id="budget" type="number" class="w-1/2 p-2 rounded-xl border-2 border-gray-300 text-gray-500 focus:outline-none" placeholder="Budget in $"/>
+              </div>
+              <div class="flex items-center justify-center space-x-4">
+                  <input id="featured_image" type="file" accept=".png, .jpg, .jpeg" class="w-1/2 p-2 rounded-xl border-2 border-gray-300 text-gray-500 focus:outline-none"/>
+                  <input id="location" type="text" class="w-1/2 p-2 rounded-xl border-2 border-gray-300 text-gray-500 focus:outline-none" placeholder="Location"/>
+              </div>
+              <textarea id="description" class="w-full p-2 rounded-xl border-2 border-gray-300 text-gray-500 focus:outline-none scrollbar-hide" placeholder="Description"></textarea>
+              <div class="flex items-center justify-center">
+                  <button onclick="createNewPost()" type="button" class="bg-[#006ad5] px-6 py-1 text-white text-xl rounded-xl hover:bg-green-700 ease-in-out duration-500 cursor-pointer">Post my story</button>
+              </div>
+          </form>
+
+      </div>
+   </div>
+</div>`;
+  loadPage(createPost);
+}
+//profile page
+function ProfilePage() {
+    const profile = `    <div class="max-h-screen overflow-hidden">
+    <!-- Header starts -->
+     <nav class="flex items-center justify-center bg-cover bg-blue-900 h-16">
+         <div class="flex items-center justify-center lg:my-0 my-4  rounded-lg lg:rounded-3xl lg:justify-between max-w-7xl w-full">
+             <a href="#/dashboard" class="w-[80%] lg:w-[25%] lg:py-0 py-4"><img src="../img/logo.png" /></a>
+             <div class="hidden lg:flex items-center px-4 py-4 w-[50%] justify-between space-x-4 text-white text-xl">
+             <a href="#/dashboard" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Dashboard</a>
+                 <a href="#/create-post" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Post a Story</a>
+                 <a href="#/chats" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Chats</a>
+                 <a href="#/profile" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Profile</a>
+                 <button type="button" onclick="logout()" class="bg-[#006ad5] px-4 py-1 rounded-xl hover:bg-cyan-700 ease-in-out duration-400 cursor-pointer">Logout</button>
+             </div>
+         </div>
+     </nav>
+    <!-- Header ends -->
+    <div class="p-4">
+        <div class=" md:w-1/2 mx-auto bg-white p-8 h-auto shadow-md rounded-md">
+            <div>
+                <a href="#/editProfile" class="text-lg text-right text-blue-700 font-medium cursor-pointer hover:underline">Edit profile</a>
+                <ion-icon name="pencil-outline" class="text-blue-900 text-xl"></ion-icon>
+            </div>
+            <h2 class="text-2xl text-center font-bold mb-4">Profile</h2>
+            <div class="flex flex-col items-center justify-center">
+            <img id="profilePic" class="w-40 h-40 bg-gray-300 rounded-full" src="${userProfile?.profilePic || 'default-profile-pic.jpg'}" alt="No picture" />
+            <div class="shadow-xl p-4 my-6 rounded-xl bg-gray-100 w-1/2 text-center">${userProfile?.bio || 'Add Bio'}</div>
+            <div class="flex items-center justify-between w-3/4 border-b-2 border-gray-500">
+                <span class="text-lg font-medium text-gray-600">Username:</span>
+                <span>${userProfile?.username || 'Add Username'}</span>
+            </div>
+            <div class="flex items-center justify-between bg-gray-300 w-3/4 border-b-2 border-gray-500">
+                <span class="text-lg font-medium text-gray-600">First Name:</span>
+                <span>${userProfile?.firstName || 'Add First Name'}</span>
+            </div>
+            <div class="flex items-center justify-between w-3/4 border-b-2 border-gray-500">
+                <span class="text-lg font-medium text-gray-600">Last Name:</span>
+                <span>${userProfile?.lastName || 'Add Last Name'}</span>
+            </div>
+            <div class="flex items-center justify-between bg-gray-300 w-3/4 border-b-2 border-gray-500">
+                <span class="text-lg font-medium text-gray-600">Email:</span>
+                <span>${userProfile?.email || 'Add Email'}</span>
+            </div>
+        </div>
+        
+        </div>
+            
+  </div>`
+    loadPage(profile);
+}
+//edit profile page
+function EditProfilePage() {
+    const editProfile = `    <div class="max-h-screen overflow-hidden">
+    <!-- Header starts -->
+    <nav class="flex items-center justify-center bg-cover bg-blue-900 h-16">
+      <div
+        class="flex items-center justify-center lg:my-0 my-4 rounded-lg lg:rounded-3xl lg:justify-between max-w-7xl w-full"
+      >
+        <a href="#/dashboard" class="w-[80%] lg:w-[25%] lg:py-0 py-4"
+          ><img src="../img/logo.png"
+        /></a>
+        <div
+          class="hidden lg:flex items-center px-4 py-4 w-[50%] justify-between space-x-4 text-white text-xl"
+        >
+        <a href="#/dashboard" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Dashboard</a>
+          <a
+            href="#/create-post"
+            class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer"
+            >Post a Story</a
+          >
+          <a
+            href="#/chats"
+            class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer"
+            >Chats</a
+          >
+          <a
+            href="#/profile"
+            class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer"
+            >Profile</a
+          >
+          <button
+            type="button"
+            onclick="logout()"
+            class="bg-[#006ad5] px-4 py-1 rounded-xl hover:bg-cyan-700 ease-in-out duration-400 cursor-pointer"
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+    </nav>
+    <!-- Header ends -->
+    <div class="p-4">
+      <div class="lg:w-1/2 mx-auto bg-white p-8 h-auto shadow-md rounded-md">
+      <a href="#/profile" class="text-sm text-right text-blue-700 font-medium cursor-pointer hover:underline">Back</a>
+          <h2 class="text-2xl text-center font-bold mb-4">Profile</h2>
+          <div class="flex flex-col items-start justify-center">
+              <div>
+                  <div class="text-lg mx-2 font-medium text-gray-600">Profile Pic:</div>
+                  <input id="profilePic" type="file" accept=".png, .jpg, .jpeg" class="border-2 border-gray-300 rounded-md p-2" />
+              </div>
+              <div>
+                  <div class="text-lg mx-2 font-medium text-gray-600">Username:</div>
+                  <input type="text" class="border-2 border-gray-300 rounded-md p-2" value="${userProfile.username}" disabled />
+              </div>
+              <div>
+                  <div class="text-lg mx-2 font-medium text-gray-600">First Name:</div>
+                  <input id="firstName" type="text" class="border-2 border-gray-300 rounded-md p-2" value="${userProfile.firstName || ''}" />
+              </div>
+              <div>
+                  <div class="text-lg mx-2 font-medium text-gray-600">Last Name:</div>
+                  <input id="lastName" type="text" class="border-2 border-gray-300 rounded-md p-2" value="${userProfile.lastName || ''}" />
+              </div>
+              <div>
+                  <div class="text-lg mx-2 font-medium text-gray-600">Email:</div>
+                  <input id="email" type="text" class="border-2 border-gray-300 rounded-md p-2" value="${userProfile.email || ''}" />
+              </div>
+              <div>
+                  <div class="text-lg mx-2 font-medium text-gray-600">Bio:</div>
+                  <textarea id="bio" class="border-2 border-gray-300 rounded-md p-2" rows="4" cols="50">${userProfile.bio || ''}</textarea>
+              </div>
+              <button type="button" onclick="updateProfile()" class="bg-blue-800 text-white px-4 py-1 rounded-xl hover:bg-cyan-700 ease-in-out duration-500 cursor-pointer">
+                  Update Profile
+              </button>
+          </div>
+      </div>
+  </div>
+  
+  </div>`;
+    loadPage(editProfile);
+}
+//chats page
+function ChatsPage() {
+    const chats = `<div class="max-h-screen overflow-hidden">
+    <!-- Header starts -->
+     <nav class="flex items-center justify-center bg-cover bg-blue-900 h-16">
+         <div class="flex items-center justify-center lg:my-0 my-4  rounded-lg lg:rounded-3xl lg:justify-between max-w-7xl w-full">
+             <a href="#/dashboard" class="w-[80%] lg:w-[25%] lg:py-0 py-4"><img src="../img/logo.png" /></a>
+             <div class="hidden lg:flex items-center px-4 py-4 w-[50%] justify-between space-x-4 text-white text-xl">
+             <a href="#/dashboard" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Dashboard</a>
+                 <a href="#/create-post" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Post a Story</a>
+                 <a href="#/chats" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Chats</a>
+                 <a href="#/profile" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Profile</a>
+                 <button type="button" onclick="logout()" class="bg-[#006ad5] px-4 py-1 rounded-xl hover:bg-cyan-700 ease-in-out duration-400 cursor-pointer">Logout</button>
+             </div>
+         </div>
+     </nav>
+    <!-- Header ends -->
+     <div class="flex items-center justify-center text-2xl text-white bg-green-700 px-2 py-4 font-bold ">Chats Page</div>
+  </div>`
+    loadPage(chats);
+}
+
+
+//function for signup
+function signup() {
+  const username = document.getElementById('signupUsername').value;
+  const password = document.getElementById('signupPassword').value;
+  const confirmPassword = document.getElementById('confirmPassword').value;
+
+  if (password !== confirmPassword) {
+      alert('Password and Confirm Password do not match.');
+      return;
+  }
+
+  fetch('/M00846514/signup', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+  })
+  .then(response => response.json())
+  .then(data => {
+      // Redirect to the login page
+      alert('Signup successful! Please login.');
+      window.location.hash = '#/login';
+  })
+  .catch(error => {
+      console.error('Signup Error:', error);
+  });
+}
+//function for login
+function login() {
+    const username = document.getElementById('loginUsername').value;
+    const password = document.getElementById('loginPassword').value;
+
+    if (!username || !password) {
+        alert('Please enter both username and password.');
+        return;
+    }
+
+    fetch('/M00846514/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Login failed. Invalid credentials.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Get token from data
+        const accessToken = data.token;
+        if (accessToken) {
+            // Save token in local storage
+            localStorage.setItem('accessToken', accessToken);
+            // Fetch user profile
+            fetchUserProfile();
+            // Redirect to the dashboard page
+            window.location.hash = '#/dashboard';
+        } else {
+            throw new Error('Token not received in the login response.');
+        }
+    })
+    .catch(error => {
+        console.error('Login error:', error.message);
+        alert('Login failed. Please check your credentials.');
+    });
+}
+
+//logout function
+function logout() {
+    fetch('/M00846514/logout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Logout failed.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Remove token from local storage
+        localStorage.removeItem('accessToken');
+        // Redirect to the login page
+        window.location.href = '#/login';
+    })
+    .catch(error => {
+        console.error('Logout error:', error.message);
+        alert('Logout failed. Please try again.');
+    });
+  }
+  
+//function to get all posts
+
+async function getPosts() {
+  try {
+      const response = await fetch('/M00846514/posts', {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+      });
+      posts = await response.json();
+      return posts;
+  } catch (error) {
+      console.error('Error fetching posts:', error);
+      return [];
+  }
+}
+
+//funnction load posts
+async function handleHashChange() {
+    const currentHash = window.location.hash;
+  
+    if (currentHash === '#/dashboard') {
+      try {
+        if(posts)
+            posts = await getPosts();
+        renderPosts(posts);
+        console.log('Posts:', posts);
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+      }
+    } else {
+    }
+  }
+
+//render posts in post-container fiv in dashboard page
+function renderPosts(posts) {
+    const postsContainer = document.getElementById('posts-container');
+    postsContainer.innerHTML = '';
+  
+    posts.forEach(post => {
+      const postElement = createPostElement(post);
+      postsContainer.appendChild(postElement);
+    });
+  }
+
+//create post element
+function createPostElement(post) {
+  const postElement = document.createElement('a');
+  postElement.href = `#/post/${post._id}`;
+  postElement.className = 'w-[80%] lg:w-1/4 shadow-lg overflow-hidden rounded-2xl m-2 flex flex-col items-center justify-center';
+  postElement.innerHTML = `
+      <div class="w-full h-60 overflow-hidden">
+          <img class="w-full h-full object-cover" src="${post.featured_image}" alt="${post.title}">
+      </div>
+      <div class="w-full bg-white flex flex-col items-start justify-center px-4 py-1">
+          <div class="flex items-center justify-between w-full">
+              <div class="text-md font-bold text-blue-900">${post.posted_by}</div>
+              <div class="flex space-x-2">
+                  <div class="flex items-center space-x-2">
+                      <ion-icon name="heart-outline" class="text-2xl text-red-600"></ion-icon>
+                      <div class="text-red-600 font-bold text-md">${post.likes}</div>
+                  </div>
+                  <div class="flex items-center space-x-2">
+                      <ion-icon name="chatbubble-ellipses-outline" class="text-2xl text-yellow-600"></ion-icon>
+                      <div class="text-yellow-600 font-bold text-md">${post.comments.length}</div>
+                  </div>
+              </div>
+          </div>
+          <div class="text-xl font-bold text-gray-500 hover:text-blue-900 ease-in-out duration-400">${post.title}</div>
+          ${post.description.split(' ').slice(0, 10).join(' ')}${post.description.split(' ').length > 10 ? '...' : ''}
+          <div class="flex justify-between items-center space-x-2 my-2">
+              <div class="text-green-600 font-bold text-md">$ ${post.budget}</div>
+              <div class="text-green-600 font-bold text-md">${post.days} days</div>
+          </div>
+      </div>
+  `;
+
+  return postElement;
+}
+
+//function to create new post
+async function createNewPost() {
+    try {
+      const posted_by = userProfile.username;
+      const title = document.getElementById('title').value;
+      const description = document.getElementById('description').value;
+      const location = document.getElementById('location').value;
+      const budget = parseInt(document.getElementById('budget').value, 10);
+      const days = parseInt(document.getElementById('days').value, 10);
+  
+      const fileInput = document.getElementById('featured_image');
+      let imagePath = null;
+  
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+  
+        const formData = new FormData();
+        formData.append('image', file);
+        // Upload the image to /img/upload
+        const imageUploadResponse = await fetch('/M00846514/upload', {
+          method: 'POST',
+          body: formData,
+        });
+  
+        const imageUploadResult = await imageUploadResponse.json();
+        imagePath = imageUploadResult.featured_image;
+        console.log('Image uploaded:', imagePath);
+      }
+  
+      const postData = {
+        posted_by: posted_by,
+        title: title,
+        featured_image: imagePath, 
+        description: description,
+        location: location,
+        budget: budget,
+        days: days,
+      };
+  
+      const createPostResponse = await fetch('/M00846514/newPost', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postData),
+      });
+  
+      const newPost = await createPostResponse.json();
+      alert('Post created successfully!');
+      window.location.hash = '#/dashboard';  
+    } catch (error) {
+      console.error('Error creating new post:', error);
+    }
+  }
+  
+//function to fetch user profile
+async function fetchUserProfile() {
+    try {
+        // get accessToken from localStorage
+        const accessToken = localStorage.getItem('accessToken');
+
+        if (!accessToken) {
+            throw new Error('Access token not found. User may not be authenticated.');
+        }
+
+        const response = await fetch('/M00846514/profile', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+            },
+            credentials: 'include',
+        });
+        
+        userProfile = await response.json();
+        username = `${userProfile.username}`;
+        if (!response.ok) {
+            throw new Error(`Failed to fetch profile. Status: ${response.status}`);
+        }
+
+
+    } catch (error) {
+        console.error('Error fetching profile:', error);
+    }
+}
+let userProfile;
+
+// Update Profile by fetching updateProfile api
+async function updateProfileForm() {
+    const email = document.getElementById('email').value;
+    const firstName = document.getElementById('firstName').value;
+    const lastName = document.getElementById('lastName').value;
+    const bio = document.getElementById('bio').value;
+    const profilePic = document.getElementById('profilePic').value;
+
+    const profileData = {
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
+        bio: bio,
+        profilePic: profilePic,
+    };
+
+    try {
+        const response = await fetch('/M00846514/updateProfile', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+            },
+            body: JSON.stringify(profileData),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to update profile.');
+        }
+
+        const updatedProfile = await response.json();
+        console.log('Updated profile:', updatedProfile);
+        alert('Profile updated successfully!');
+        window.location.hash = '#/profile';
+    } catch (error) {
+        console.error('Error updating profile:', error);
+    }
+}
+//function to update profile
+async function updateProfile() {
+    const profilePic = document.getElementById('profilePic').value;
+    const firstName = document.getElementById('firstName').value;
+    const lastName = document.getElementById('lastName').value;
+    const email = document.getElementById('email').value;
+    const bio = document.getElementById('bio').value;
+
+    //try to fetch /M00846514/upload to upload the profilePic
+    let imagePath = null;
+    if (profilePic) {
+        const fileInput = document.getElementById('profilePic');
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        formData.append('image', file);
+        const imageUploadResponse = await fetch('/M00846514/upload', {
+            method: 'POST',
+            body: formData,
+        });
+        const imageUploadResult = await imageUploadResponse.json();
+        imagePath = imageUploadResult.featured_image;
+    }
+
+    const profileData = {
+        profilePic: imagePath,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        bio: bio,
+    };
+
+    try {
+        const response = await fetch('/M00846514/updateProfile', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+            },
+            body: JSON.stringify(profileData),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to update profile.');
+        }
+
+        const updatedProfile = await response.json();
+        console.log('Updated profile:', updatedProfile);
+        alert('Profile updated successfully!');
+        await fetchUserProfile();
+        window.location.hash = '#/profile';
+
+    } catch (error) {
+        console.error('Error updating profile:', error);
+    }
+}
+
+//function for comment
+async function comment(){
+    postId = window.location.href.split('/').pop();
+    username = userProfile.username;
+    text = document.getElementById('commentBox').value;
+    try {
+        const response = await fetch('/M00846514/newComment', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ postId, username, text })
+        });
+        const data = await response.json();
+        alert('Comment added successfully');
+      } catch (error) {
+        console.error(error);
+      }
+}
+
+//function for like
+async function likePost(){
+    postId = window.location.href.split('/').pop();
+    try {
+        const response = await fetch('/M00846514/likePost', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ postId })
+        });
+        const data = await response.json();
+        alert('Post liked successfully');
+        } catch (error) {
+        console.error(error);
+        }
+}
