@@ -252,7 +252,7 @@ function LoginPage() {
 }
 //dashboard page
 function DashboardPage() {
-  const dashboard = `    <div class="max-h-screen overflow-hidden">
+  const dashboard = `  <div class="max-h-screen overflow-hidden">
   <!-- Header starts -->
    <nav class="flex items-center justify-center bg-cover bg-blue-900 h-16">
        <div class="flex items-center justify-center lg:my-0 my-4  rounded-lg lg:rounded-3xl lg:justify-between max-w-7xl w-full">
@@ -268,11 +268,58 @@ function DashboardPage() {
    </nav>
   <!-- Header ends -->
   <!-- Dashboard Section starts  -->
-  <div class="h-screen flex-col flex lg:flex-row">
-      <div class="bg-gray-100 lg:w-[20%] flex flex-col items-start justify-center px-6 border-r-4 border-blue-900">
-        <input type="text" placeholder="budget" id="filter_budget"/>
-        <Button onclick="filterPostsByBudget()">filter</Button>
-        <Button onclick="getAllDistinctLocations()">Get</Button>
+  <div class="h-screen overflow-y-scroll scrollbar-hide flex-col flex lg:flex-row">
+      <div class="bg-gray-100 lg:w-[20%] flex flex-col items-center p-2 justify-start px-6 lg:border-r-4 min-h-40 overflow-scroll scrollbar-hide lg:border-b-0 border-b-2 border-blue-900">
+        <div class="font-medium my-2 text-blue-900">Search by budget</div>
+        <div class="flex space-x-1">
+          <input type="text" placeholder="1000" id="filter_budget" class="text-blue-900 w-[65%] border-gray-500 border-2 rounded-md px-2 focus:outline-none"/>
+          <Button onclick="filterPostsByBudget()" class="bg-green-600 text-white px-2 py-1 rounded-md hover:bg-blue-900 ease-in duration-500">Filter</Button>
+        </div>
+        <div class="font-medium my-2 text-blue-900">Search by days</div>
+        <div class="flex space-x-1">
+          <input type="text" placeholder="5" id="filter_days" class="text-blue-900 w-[65%] border-gray-500 border-2 rounded-md px-2 focus:outline-none"/>
+          <Button onclick="filterPostsByDays()" class="bg-yellow-600 text-white px-2 py-1 rounded-md hover:bg-blue-900 ease-in duration-500">Filter</Button>
+        </div>
+        <div class="font-medium my-2 text-blue-900 border-b-2 border-blue-900 w-full">Popular Locations</div>
+        <div class="flex-wrap flex space-x-2">
+  ${locations.map(location => `
+    <div onclick="filterPostsByLocation('${location}')" class="font-medium my-2 text-white px-2 py-1 border-2 rounded-xl hover:bg-lime-800 bg-blue-900 ease-in duration-500 cursor-pointer">${location}</div>`).join('')}
+</div>
+        <div class="font-medium my-2 text-blue-900 border-b-2 border-blue-900 w-full">Sort By</div>
+        <div class="flex-wrap flex space-x-2">
+          <div onclick="sortPostsByMinLikes()" class="font-medium flex items-center my-2 text-green-800 cursor-pointer ease-in duration-500 hover:scale-105 px-2 py-1 border-2 rounded-xl border-green-800">
+            <ion-icon name="arrow-up-outline"></ion-icon>
+            <div>Likes</div>
+          </div>
+          <div onclick="sortPostsByMaxLikes()" class="font-medium flex items-center my-2 text-fuchsia-600 cursor-pointer ease-in duration-500 hover:scale-105 px-2 py-1 border-2 rounded-xl border-fuchsia-600">
+            <ion-icon name="arrow-down-outline"></ion-icon>
+            <div>Likes</div>
+          </div>
+          <div onclick="sortPostsByMaxComments()" class="font-medium flex items-center my-2 text-violet-600 cursor-pointer ease-in duration-500 hover:scale-105 px-2 py-1 border-2 rounded-xl border-violet-600">
+            <ion-icon name="arrow-up-outline"></ion-icon>
+            <div>Comments</div>
+          </div>
+          <div onclick="sortPostsByMinLikes()" class="font-medium flex items-center my-2 text-yellow-600 cursor-pointer ease-in duration-500 hover:scale-105 px-2 py-1 border-2 rounded-xl border-yellow-600">
+            <ion-icon name="arrow-down-outline"></ion-icon>
+            <div>Comments</div>
+          </div>
+          <div onclick="sortPostsByMaxBudget()" class="font-medium flex items-center my-2 text-lime-600 cursor-pointer ease-in duration-500 hover:scale-105 px-2 py-1 border-2 rounded-xl border-lime-600">
+            <ion-icon name="arrow-up-outline"></ion-icon>
+            <div>Budget</div>
+          </div>
+          <div onclick="sortPostsByMinBudget()" class="font-medium flex items-center my-2 text-blue-600 cursor-pointer ease-in duration-500 hover:scale-105 px-2 py-1 border-2 rounded-xl border-blue-600">
+            <ion-icon name="arrow-down-outline"></ion-icon>
+            <div>Budget</div>
+          </div>
+          <div onclick="sortPostsByMaxDays()" class="font-medium flex items-center my-2 text-red-700 cursor-pointer ease-in duration-500 hover:scale-105 px-2 py-1 border-2 rounded-xl border-red-700">
+            <ion-icon name="arrow-up-outline"></ion-icon>
+            <div>Days</div>
+          </div>
+          <div onclick="sortPostsByMinDays()" class="font-medium flex items-center my-2 text-yellow-700 cursor-pointer ease-in duration-500 hover:scale-105 px-2 py-1 border-2 rounded-xl border-yellow-700">
+            <ion-icon name="arrow-down-outline"></ion-icon>
+            <div>Days</div>
+          </div>
+        </div>
         </div>
       <div id="posts-container" class="bg-gray-100 pt-4 pb-14 lg:w-[80%] min-h-screen flex flex-wrap items-center justify-center overflow-y-scroll scrollbar-hide">
       </div>
@@ -282,7 +329,92 @@ function DashboardPage() {
   <!-- Dashboard Section ends -->
 </div>`;
   loadPage(dashboard);
+  displayUserPosts();
+
 }
+
+filterPosts = [];
+//function to filter posts by budget
+function filterPostsByBudget() {
+    const budget = document.getElementById('filter_budget').value;
+    filterPosts = posts.filter(post => post.budget > budget);
+    renderPosts(filterPosts);
+}
+
+//function to filter posts by days
+function filterPostsByDays() {
+    const days = document.getElementById('filter_days').value;
+    filterPosts = posts.filter(post => post.days > days);
+    renderPosts(filterPosts);
+}
+
+//function to get all locations from posts
+let locations = [];
+function getLocations() {
+    // all locations must be unique
+    posts.forEach(post => {
+        if (!locations.includes(post.location)) {
+            locations.push(post.location);
+        }
+    });
+    // console.log(locations);
+    return locations;
+}
+
+//function on which click on location, posts will be filtered
+function filterPostsByLocation(location) {
+    filterPosts = posts.filter(post => post.location === location);
+    renderPosts(filterPosts);
+}
+
+sortedPosts = [];
+//function to sort posts by Max likes
+function sortPostsByMaxLikes() {
+    sortedPosts = posts.sort((a, b) => a.likes - b.likes);
+    renderPosts(sortedPosts);
+}
+//function to sort posts by Min likes
+function sortPostsByMinLikes() {
+    sortedPosts = posts.sort((a, b) => b.likes - a.likes);
+    renderPosts(sortedPosts);
+}
+
+//function to sort posts by Max comments
+function sortPostsByMaxComments() {
+    sortedPosts = posts.sort((a, b) => a.comments.length - b.comments.length);
+    renderPosts(sortedPosts);
+}
+
+//function to sort posts by Min comments
+function sortPostsByMinComments() {
+    sortedPosts = posts.sort((a, b) => b.comments.length - a.comments.length);
+    renderPosts(sortedPosts);
+}
+
+//function to sort posts by Max budget
+function sortPostsByMaxBudget() {
+    sortedPosts = posts.sort((a, b) => a.budget - b.budget);
+    renderPosts(sortedPosts);
+}
+
+//function to sort posts by Min budget
+function sortPostsByMinBudget() {
+    sortedPosts = posts.sort((a, b) => b.budget - a.budget);
+    renderPosts(sortedPosts);
+}
+
+//function to sort posts by max days
+function sortPostsByMaxDays() {
+    sortedPosts = posts.sort((a, b) => a.days - b.days);
+    renderPosts(sortedPosts);
+}
+
+//function to sort posts by min days
+function sortPostsByMinDays() {
+    sortedPosts = posts.sort((a, b) => b.days - a.days);
+    renderPosts(sortedPosts);
+}
+
 async function PostDetailsPage(){
     // get the current url
     const tokens = window.location.href.split('/');
@@ -344,26 +476,6 @@ async function PostDetailsPage(){
     loadPage(postDetails);
 }
 
-filterPosts = [];
-function filterPostsByBudget() {
-    const budget = document.getElementById('filter_budget').value;
-    filterPosts = posts.filter(post => post.budget > budget);
-    console.log(filterPosts);
-    renderPosts(filterPosts);
-}
-const locationSet = new Set();
-function getAllDistinctLocations() {
-    const locations = posts.map(post => post.location);
-    console.log(new Set(locations));
-    return new Set(locations);
-}
-function filterPostsByLocation() {
-    const location = document.getElementById('filter_location').value;
-    filterPosts = posts.filter(post => post.location === location);
-    console.log(filterPosts);
-    renderPosts(filterPosts);
-}
-
 //create new post page
 function CreatePostPage() {
   const createPost = `    <div class="max-h-screen overflow-hidden">
@@ -406,7 +518,7 @@ function CreatePostPage() {
 }
 //profile page
 function ProfilePage() {
-    const profile = `    <div class="max-h-screen overflow-hidden">
+    const profile = `<div class="max-h-screen ">
     <!-- Header starts -->
      <nav class="flex items-center justify-center bg-cover bg-blue-900 h-16">
          <div class="flex items-center justify-center lg:my-0 my-4  rounded-lg lg:rounded-3xl lg:justify-between max-w-7xl w-full">
@@ -421,7 +533,7 @@ function ProfilePage() {
          </div>
      </nav>
     <!-- Header ends -->
-    <div class="p-4">
+    <div class="p-4 w-full">
         <div class=" md:w-1/2 mx-auto bg-white p-8 h-auto shadow-md rounded-md">
             <div>
                 <a href="#/editProfile" class="text-lg text-right text-blue-700 font-medium cursor-pointer hover:underline">Edit profile</a>
@@ -449,9 +561,33 @@ function ProfilePage() {
             </div>
         </div>
         
-        </div>
-            
-  </div>`
+    </div>
+    <div class="flex w-full flex-col items-center justify-start space-y-4" id="user-posts-container">
+    <div class="text-xl text-gray-600 font-bold mt-4">My Posts</div>
+<div class=" w-[90%] px-2 lg:w-1/2 grid grid-cols-1 lg:grid-cols-3 justify-center gap-4">
+${userPosts.map(post => `
+<a href="#/post/${post._id}" class="w-full">
+  <div class="bg-white rounded-md shadow-xl flex flex-col items-center overflow-hidden">
+    <div class="w-full h-60 overflow-hidden">
+      <img src="${post.featured_image}" class="w-full h-full object-cover" alt="${post.title}">
+    </div>
+    <div class="text-gray-500 font-medium mt-2 px-4">
+      <div class="text-lg font-bold text-blue-900">${post.title}</div>
+      <div>Location: ${post.location}</div>
+      <div class="text-green-600">Budget: $${post.budget}</div>
+      <div class="text-fuchsia-600">Days: ${post.days}</div>
+      <div class="text-red-600">Likes: ${post.likes}</div>
+      <div class="text-yellow-600">Comments: ${post.comments.length}</div>
+    </div>
+  </div>
+</a>
+`).join('')}
+
+</div>
+
+</div>
+
+</div>`
     loadPage(profile);
 }
 //edit profile page
@@ -665,7 +801,9 @@ async function getPosts() {
           },
       });
       posts = await response.json();
+    //   console.log('Posts:', posts);
       return posts;
+
   } catch (error) {
       console.error('Error fetching posts:', error);
       return [];
@@ -678,18 +816,17 @@ async function handleHashChange() {
   
     if (currentHash === '#/dashboard') {
       try {
-        if(posts)
+        if(posts){
             posts = await getPosts();
+        }
         renderPosts(posts);
-        console.log('Posts:', posts);
       } catch (error) {
         console.error('Error fetching posts:', error);
       }
-    } else {
-    }
+    } 
   }
 
-//render posts in post-container fiv in dashboard page
+//render posts in post-container div in dashboard page
 function renderPosts(posts) {
     const postsContainer = document.getElementById('posts-container');
     postsContainer.innerHTML = '';
@@ -698,7 +835,9 @@ function renderPosts(posts) {
       const postElement = createPostElement(post);
       postsContainer.appendChild(postElement);
     });
+    
   }
+
 
 //create post element
 function createPostElement(post) {
@@ -734,6 +873,7 @@ function createPostElement(post) {
 
   return postElement;
 }
+
 
 //function to create new post
 async function createNewPost() {
@@ -949,6 +1089,23 @@ async function likePost(){
         });
         const data = await response.json();
         alert('Post liked successfully');
+        } catch (error) {
+        console.error(error);
+        }
+}
+
+//function to display user posts
+let userPosts;
+async function displayUserPosts(){
+    try {
+        const response = await fetch('/M00846514/myPosts', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+        }
+        });
+        userPosts = await response.json();
         } catch (error) {
         console.error(error);
         }

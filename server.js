@@ -281,6 +281,31 @@ app.post(`/${ID}/newComment`, async (req, res) => {
   }
 });
 
+app.get(`/${ID}/myPosts`, authenticateToken, async (req, res) => {
+  try {
+    const posts = await Post.find({ posted_by: req.user.username });
+    // Return the posts
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+app.get(`/${ID}/users`, authenticateToken, async (req, res) => {
+  try {
+    // Fetch all user profiles excluding the password
+    const users = await User.find({}, '-password');
+
+    // Return the user profiles
+    res.status(200).json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
 app.use(express.static('public'));
 app.use('/public', express.static('public'));
 
