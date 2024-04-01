@@ -54,6 +54,15 @@ const postSchema = new mongoose.Schema({
   }],
 });
 
+//Message schema
+const MessageSchema = new mongoose.Schema({
+  sender: { type: String, required: true },
+  receiver: { type: String, required: true },
+  data: { type: String, required: true },
+  time: { type: Date, default: Date.now }
+});
+
+
 //Multer storage to save image in /public/img/uploads
 const storage = multer.diskStorage({
   destination: './public/img/uploads/',
@@ -69,6 +78,9 @@ const User = mongoose.model('User', userSchema);
 
 //Post Model
 const Post = mongoose.model('Post', postSchema);
+
+//Message model
+const Message = mongoose.model('Message', MessageSchema);
 
 // Middleware for parsing JSON in requests
 app.use(bodyParser.json());
@@ -305,6 +317,21 @@ app.get(`/${ID}/users`, authenticateToken, async (req, res) => {
   }
 });
 
+app.post(`/${ID}/messages`, (req, res) => {
+  const { sender, receiver, data } = req.body;
+  const newMessage = new Message({ sender, receiver, data });
+  newMessage.save()
+    .then(message => res.json(message))
+    .catch(err => console.log(err));
+});
+
+app.get(`/${ID}/chats`, authenticateToken, (req, res) => {
+  const { username } = req.user; 
+  
+  Message.find({ $or: [{ sender: username }, { receiver: username }] })
+    .then(messages => res.json(messages))
+    .catch(err => console.log(err));
+});
 
 app.use(express.static('public'));
 app.use('/public', express.static('public'));

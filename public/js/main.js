@@ -43,6 +43,12 @@ function navigateTo(hash) {
       case "#/editProfile":
             EditProfilePage();
             break;
+      case "#/users":
+            Users();
+            break;
+      case hash.match(/#\/profile\/.*/g)?.[0]:
+            usersProfile();
+            break;
       case hash.match(/#\/post\/.*/g)?.[0]:
         PostDetailsPage();
         break;
@@ -257,8 +263,12 @@ function DashboardPage() {
    <nav class="flex items-center justify-center bg-cover bg-blue-900 h-16">
        <div class="flex items-center justify-center lg:my-0 my-4  rounded-lg lg:rounded-3xl lg:justify-between max-w-7xl w-full">
            <div class="w-[80%] lg:w-[25%] lg:py-0 py-4"><img src="../img/logo.png" /></div>
+           <div class="flex items-center bg-white rounded overflow-hidden border">
+              <input id="searchBar" class="px-2 h-8 py-1 focus:outline-none text-gray-600" type="text" placeholder="Search Posts" />
+              <div onclick="search()" class="bg-white px-2 py-1 bg-white hover:bg-blue-900 hover:text-white rounded-tr rounded-br ease-in duration-400 cursor-pointer text-xl text-blue-900"><ion-icon class="" name="search-outline"></ion-icon></div>
+            </div>
            <div class="hidden lg:flex items-center px-4 py-4 w-[50%] justify-between space-x-4 text-white text-xl">
-               <a href="#/dashboard" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Dashboard</a>
+               <a href="#/users" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Users</a>
                <a href="#/create-post" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Post a Story</a>
                <a href="#/chats" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Chats</a>
                <a href="#/profile" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Profile</a>
@@ -333,87 +343,95 @@ function DashboardPage() {
 
 }
 
-filterPosts = [];
-//function to filter posts by budget
-function filterPostsByBudget() {
-    const budget = document.getElementById('filter_budget').value;
-    filterPosts = posts.filter(post => post.budget > budget);
-    renderPosts(filterPosts);
+//users page
+function Users() {
+    const users = `  <div class="max-h-screen overflow-hidden">
+    <!-- Header starts -->
+     <nav class="flex items-center justify-center bg-cover bg-blue-900 h-16">
+         <div class="flex items-center justify-center lg:my-0 my-4  rounded-lg lg:rounded-3xl lg:justify-between max-w-7xl w-full">
+             <a href="#/dashboard" class="w-[80%] lg:w-[25%] lg:py-0 py-4"><img src="../img/logo.png" /></a>
+             <div class="flex items-center bg-white rounded overflow-hidden border">
+              <input id="searchUserBar" class="px-2 h-8 py-1 focus:outline-none text-gray-600" type="text" placeholder="Search User" />
+              <div onclick="searchUsers()" class="bg-white px-2 py-1 bg-white hover:bg-blue-900 hover:text-white rounded-tr rounded-br ease-in duration-500 cursor-pointer text-xl text-blue-900"><ion-icon class="" name="search-outline"></ion-icon></div>
+            </div>
+             <div class="hidden lg:flex items-center px-4 py-4 w-[50%] justify-between space-x-4 text-white text-xl">
+                 <a href="#/dashboard" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Dashboard</a>
+                 <a href="#/create-post" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Post a Story</a>
+                 <a href="#/chats" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Chats</a>
+                 <a href="#/profile" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Profile</a>
+                 <button type="button" onclick="logout()" class="bg-[#006ad5] px-4 py-1 rounded-xl hover:bg-cyan-700 ease-in-out duration-400 cursor-pointer">Logout</button>
+             </div>
+         </div>
+     </nav>
+    <!-- Header ends -->
+    <!-- Users Section starts  -->
+    <div class="h-screen flex items-center justify-center overflow-y-scroll scrollbar-hide py-6">
+        <div id="users-container" class="pt-4 mt-14 space-y-4 pb-14 lg:w-[60%] min-h-screen flex-col items-start justify-start overflow-y-scroll scrollbar-hide">
+          
+        </div>
+    </div>
+    
+    
+    <!-- Users Section ends -->
+  </div>`
+    loadPage(users);
 }
 
-//function to filter posts by days
-function filterPostsByDays() {
-    const days = document.getElementById('filter_days').value;
-    filterPosts = posts.filter(post => post.days > days);
-    renderPosts(filterPosts);
+//function to display user profile
+async function usersProfile() {
+    // get the current user
+    const tokens = window.location.href.split('/');
+    const userId = tokens[tokens.length - 1];
+    const userData = users.find(user => user._id === userId);
+    const profile = `  <div class="max-h-screen ">
+    <!-- Header starts -->
+     <nav class="flex items-center justify-center bg-cover bg-blue-900 h-16">
+         <div class="flex items-center justify-center lg:my-0 my-4  rounded-lg lg:rounded-3xl lg:justify-between max-w-7xl w-full">
+             <a href="#/dashboard" class="w-[80%] lg:w-[25%] lg:py-0 py-4"><img src="../img/logo.png" /></a>
+             <div class="hidden lg:flex items-center px-4 py-4 w-[50%] justify-between space-x-4 text-white text-xl">
+             <a href="#/dashboard" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Dashboard</a>
+                 <a href="#/create-post" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Post a Story</a>
+                 <a href="#/chats" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Chats</a>
+                 <a href="#/profile" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Profile</a>
+                 <button type="button" onclick="logout()" class="bg-[#006ad5] px-4 py-1 rounded-xl hover:bg-cyan-700 ease-in-out duration-400 cursor-pointer">Logout</button>
+             </div>
+         </div>
+     </nav>
+    <!-- Header ends -->
+    <div class="p-4 w-full">
+        <div class=" md:w-1/2 mx-auto bg-white p-8 h-auto shadow-md rounded-md">
+            <h2 class="text-2xl text-center font-bold mb-4">Profile</h2>
+            <div class="flex flex-col items-center justify-center">
+            <img id="profilePic" class="w-40 h-40 bg-gray-300 rounded-full" src="${userData?.profilePic || 'default-profile-pic.jpg'}" alt="No picture" />
+            <a href="#/chats" class="bg-blue-900 px-2 py-1 my-2 rounded text-white hover:bg-green-700 ease-in-out duration-500 cursor-pointer">Message</a>
+            <div class="shadow-xl p-4 my-6 rounded-xl bg-gray-100 w-1/2 text-center">${userData?.bio || 'Add Bio'}</div>
+            <div class="flex items-center justify-between w-3/4 border-b-2 border-gray-500">
+                <span class="text-lg font-medium text-gray-600">Username:</span>
+                <span>${userData?.username || 'Add Username'}</span>
+            </div>
+            <div class="flex items-center justify-between bg-gray-300 w-3/4 border-b-2 border-gray-500">
+                <span class="text-lg font-medium text-gray-600">First Name:</span>
+                <span>${userData?.firstName || 'Add First Name'}</span>
+            </div>
+            <div class="flex items-center justify-between w-3/4 border-b-2 border-gray-500">
+                <span class="text-lg font-medium text-gray-600">Last Name:</span>
+                <span>${userData?.lastName || 'Add Last Name'}</span>
+            </div>
+            <div class="flex items-center justify-between bg-gray-300 w-3/4 border-b-2 border-gray-500">
+                <span class="text-lg font-medium text-gray-600">Email:</span>
+                <span>${userData?.email || 'Add Email'}</span>
+            </div>
+        </div>
+        
+    </div>
+    
+  </div>
+  `
+    loadPage(profile);
 }
+    
 
-//function to get all locations from posts
-let locations = [];
-function getLocations() {
-    // all locations must be unique
-    posts.forEach(post => {
-        if (!locations.includes(post.location)) {
-            locations.push(post.location);
-        }
-    });
-    // console.log(locations);
-    return locations;
-}
 
-//function on which click on location, posts will be filtered
-function filterPostsByLocation(location) {
-    filterPosts = posts.filter(post => post.location === location);
-    renderPosts(filterPosts);
-}
-
-sortedPosts = [];
-//function to sort posts by Max likes
-function sortPostsByMaxLikes() {
-    sortedPosts = posts.sort((a, b) => a.likes - b.likes);
-    renderPosts(sortedPosts);
-}
-//function to sort posts by Min likes
-function sortPostsByMinLikes() {
-    sortedPosts = posts.sort((a, b) => b.likes - a.likes);
-    renderPosts(sortedPosts);
-}
-
-//function to sort posts by Max comments
-function sortPostsByMaxComments() {
-    sortedPosts = posts.sort((a, b) => a.comments.length - b.comments.length);
-    renderPosts(sortedPosts);
-}
-
-//function to sort posts by Min comments
-function sortPostsByMinComments() {
-    sortedPosts = posts.sort((a, b) => b.comments.length - a.comments.length);
-    renderPosts(sortedPosts);
-}
-
-//function to sort posts by Max budget
-function sortPostsByMaxBudget() {
-    sortedPosts = posts.sort((a, b) => a.budget - b.budget);
-    renderPosts(sortedPosts);
-}
-
-//function to sort posts by Min budget
-function sortPostsByMinBudget() {
-    sortedPosts = posts.sort((a, b) => b.budget - a.budget);
-    renderPosts(sortedPosts);
-}
-
-//function to sort posts by max days
-function sortPostsByMaxDays() {
-    sortedPosts = posts.sort((a, b) => a.days - b.days);
-    renderPosts(sortedPosts);
-}
-
-//function to sort posts by min days
-function sortPostsByMinDays() {
-    sortedPosts = posts.sort((a, b) => b.days - a.days);
-    renderPosts(sortedPosts);
-}
 
 async function PostDetailsPage(){
     // get the current url
@@ -445,7 +463,7 @@ async function PostDetailsPage(){
             <div class="text-5xl font-bold my-4">${post.title}</div>
             <div class="flex items-center justify-around text-gray-500 font-medium space-x-4 my-2">
                 <div class="text-blue-900">${post.posted_by}</div>
-                <div class="">${post.date}</div>
+                <div class="">${formatTime(post.date)}</div>
             </div>
             <div class="flex space-x-4 w-full items-center justify-center my-4">
                 <div onclick="likePost()" class="text-red-600 hover:text-green-600"><ion-icon class="text-2xl text-red-600" name="thumbs-up-outline"></ion-icon> ${post.likes}</div>
@@ -564,28 +582,28 @@ function ProfilePage() {
     </div>
     <div class="flex w-full flex-col items-center justify-start space-y-4" id="user-posts-container">
     <div class="text-xl text-gray-600 font-bold mt-4">My Posts</div>
-<div class=" w-[90%] px-2 lg:w-1/2 grid grid-cols-1 lg:grid-cols-3 justify-center gap-4">
-${userPosts.map(post => `
-<a href="#/post/${post._id}" class="w-full">
-  <div class="bg-white rounded-md shadow-xl flex flex-col items-center overflow-hidden">
-    <div class="w-full h-60 overflow-hidden">
-      <img src="${post.featured_image}" class="w-full h-full object-cover" alt="${post.title}">
-    </div>
-    <div class="text-gray-500 font-medium mt-2 px-4">
-      <div class="text-lg font-bold text-blue-900">${post.title}</div>
-      <div>Location: ${post.location}</div>
-      <div class="text-green-600">Budget: $${post.budget}</div>
-      <div class="text-fuchsia-600">Days: ${post.days}</div>
-      <div class="text-red-600">Likes: ${post.likes}</div>
-      <div class="text-yellow-600">Comments: ${post.comments.length}</div>
-    </div>
-  </div>
-</a>
-`).join('')}
+        <div class=" w-[90%] px-2 lg:w-1/2 grid grid-cols-1 lg:grid-cols-3 justify-center gap-4">
+            ${userPosts.map(post => `
+                <a href="#/post/${post._id}" class="w-full">
+                    <div class="bg-white rounded-md shadow-xl flex flex-col items-center overflow-hidden">
+                        <div class="w-full h-60 overflow-hidden">
+                        <img src="${post.featured_image}" class="w-full h-full object-cover" alt="${post.title}">
+                        </div>
+                        <div class="text-gray-500 font-medium mt-2 px-4">
+                        <div class="text-lg font-bold text-blue-900">${post.title}</div>
+                        <div>Location: ${post.location}</div>
+                        <div class="text-green-600">Budget: $${post.budget}</div>
+                        <div class="text-fuchsia-600">Days: ${post.days}</div>
+                        <div class="text-red-600">Likes: ${post.likes}</div>
+                        <div class="text-yellow-600">Comments: ${post.comments.length}</div>
+                        </div>
+                    </div>
+                </a>
+            `).join('')}
 
-</div>
+        </div>
 
-</div>
+    </div>
 
 </div>`
     loadPage(profile);
@@ -670,6 +688,7 @@ function EditProfilePage() {
   </div>`;
     loadPage(editProfile);
 }
+
 //chats page
 function ChatsPage() {
     const chats = `<div class="max-h-screen overflow-hidden">
@@ -687,8 +706,24 @@ function ChatsPage() {
          </div>
      </nav>
     <!-- Header ends -->
-     <div class="flex items-center justify-center text-2xl text-white bg-green-700 px-2 py-4 font-bold ">Chats Page</div>
-  </div>`
+    <div class="h-screen flex items-center justify-center overflow-y-scroll scrollbar-hide ">
+        <div id="" class="w-full max-h-screen flex items-start justify-start">
+            <div id="chats-container" class="h-screen pb-16 w-[30%] bg-white text-white flex items-center justify-start flex-col overflow-y-scroll scrollbar-hide border-r-2 border-blue-900">
+            </div>
+            <div id="" class="h-screen w-[70%] pb-16 flex flex-col items-end justify-end ">
+                <div id="messageElement" class="w-full h-full flex flex-col items-end justify-end space-y-4 pb-16">
+                    
+                </div>
+                    
+                    <div class="flex w-full bg-blue-900 items-center justify-between">
+                        <div class="flex w-full"><input id="messageField" required class="w-full focus:outline-none border-2 border-blue-900 rounded-md px-4 py-4" type="text" placeholder="Enter your message.."/></div>
+                        <button onclick="sendMessage()" class="text-xl bg-blue-900 text-white rounded px-2 py-4 hover:bg-green-600">Send</button>
+                    </div>
+            </div>
+          
+        </div>
+    </div>
+</div>  `
     loadPage(chats);
 }
 
@@ -818,12 +853,36 @@ async function handleHashChange() {
       try {
         if(posts){
             posts = await getPosts();
+            getUsers();
+            getLocations();
         }
         renderPosts(posts);
       } catch (error) {
         console.error('Error fetching posts:', error);
       }
     } 
+    if (currentHash === '#/users') {
+      try {
+        if(users){
+            users = await getUsers();
+        }
+        renderUsers(users);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    }
+    if (currentHash === '#/chats') {
+      try {
+        if(chats){
+            chats = await getChats();
+            chatSidebar= filterChats(chats, users);
+        }
+        renderChats(chatSidebar);
+        
+      } catch (error) {
+        console.error('Error fetching chats:', error);
+      }
+    }
   }
 
 //render posts in post-container div in dashboard page
@@ -838,6 +897,169 @@ function renderPosts(posts) {
     
   }
 
+//render users in users-container div in users page
+function renderUsers(users) {
+    const usersContainer = document.getElementById('users-container');
+    usersContainer.innerHTML = '';
+  
+    users.forEach(user => {
+      const userElement = createUserElement(user);
+      usersContainer.appendChild(userElement);
+    });
+    
+  }
+
+//render chats in chats-container div in chats page
+function renderChats(chatSidebar) {
+    const chatsContainer = document.getElementById('chats-container');
+    chatsContainer.innerHTML = '';
+  
+    chatSidebar.forEach(chat => {
+      const chatElement = createChatElement(chat);
+      chatsContainer.appendChild(chatElement);
+    });
+}
+
+//render chats in messages-container div in chats page
+function renderMessages(senderMessages, receiverMessages) {
+    const messageElement = document.getElementById('messageElement');
+    messageElement.innerHTML = '';
+    const messagesElement = createMessageElement(senderMessages, receiverMessages);
+    messageElement.appendChild(messagesElement);
+}
+
+//message element
+function createMessageElement(senderMessages, receiverMessages, username) {
+    const messageElement = document.createElement('div');
+    messageElement.className = 'h-full w-full flex flex-col space-y-4 overflow-y-scroll scrollbar-hide';
+    messageElement.innerHTML = '';
+
+    // Combine sender and receiver messages into a single array
+    const allMessages = senderMessages.concat(receiverMessages);
+
+    // Sort messages by time in ascending order
+    allMessages.sort((a, b) => {
+        return new Date(a.time) - new Date(b.time);
+    });
+
+    // Add username container
+    const usernameContainer = document.createElement('div');
+    usernameContainer.className = 'border-b-2 border-blue-900 py-4 flex w-full px-4 font-medium text-xl';
+    usernameContainer.id = 'receiverUsername';
+    usernameContainer.textContent = `${senderMessages[0].sender === username ? senderMessages[0].receiver : senderMessages[0].sender}`;
+    messageElement.appendChild(usernameContainer);
+
+    // Iterate over messages
+    allMessages.forEach(message => {
+        const messageDiv = document.createElement('div');
+        const isSender = message.sender === username;
+        messageDiv.className = isSender ? 'flex items-center justify-end w-full px-4' : 'flex items-center justify-start w-full px-4';
+        messageDiv.innerHTML = `
+            <div class="p-4 rounded-xl ${isSender ? 'bg-blue-900 text-white' : 'bg-green-700 text-white'} max-w-[60%]">
+                <div class="text-lg">${message.data}</div>
+                <div class="text-xs ${isSender ? 'text-right' : 'text-left'}">${formatTime(message.time)}</div>
+            </div>
+        `;
+        messageElement.appendChild(messageDiv);
+    });
+
+    return messageElement;
+}
+
+
+let filteredMessages = [];
+//function which will filter from chats array where username == clicked username
+function filterMessages(chats, clickedUsername) {
+    // Check if chats is an array
+    if (!Array.isArray(chats)) {
+        console.error('Chats is not an array.');
+        return [];
+    }
+
+    const filteredMessages = chats.filter((chat) => {
+        return chat.sender === clickedUsername || chat.receiver === clickedUsername;
+    });
+
+    // Sort filteredMessages by time in ascending order
+    filteredMessages.sort((a, b) => {
+        return new Date(a.time) - new Date(b.time);
+    });
+
+    return filteredMessages;
+}
+
+let senderMessages = [];
+let receiverMessages = [];
+
+// Get messages where the sender is the clicked username
+function getSenderMessages(filteredMessages, clickedUsername) {
+    senderMessages = filteredMessages.filter((message) => {
+        return message.sender === clickedUsername;
+    });
+    console.log('Sender Messages:', senderMessages)
+    return senderMessages;
+}
+
+// Get messages where the receiver is the current user
+function getReceiverMessages(filteredMessages, currentUsername) {
+    receiverMessages = filteredMessages.filter((message) => {
+        return message.receiver === currentUsername;
+    });
+    console.log('Receiver Messages:', receiverMessages)
+    return receiverMessages;
+}
+
+//create chat element
+function createChatElement(chatSidebar) {
+    const chatElement = document.createElement('div');
+    chatElement.onclick = () => {
+        const clickedUsername = `${chatSidebar.username}`;
+        const filteredMessages = filterMessages(chats, clickedUsername);
+        getSenderMessages(filteredMessages, clickedUsername);
+        getReceiverMessages(filteredMessages, clickedUsername);
+        renderMessages(senderMessages, receiverMessages);
+    }
+    chatElement.className = 'my-2 flex items-center justify-start space-x-4 border-b-2 w-full px-6 border-blue-900 hover:shadow-xl py-2 ease-in duration-500 cursor-pointer';
+    chatElement.innerHTML = `
+    <div class="h-16 w-20 rounded-full bg-blue-900 overflow-hidden"><img class="h-full w-full rounded-full" src="${chatSidebar.profilePic}" /></div>
+    <div class="flex w-full text-gray-600 items-center justify-between">
+        <div>
+            <div class="font-medium text-xl">${chatSidebar.username}</div>
+            <div>${chatSidebar.data}</div>
+        </div>
+        <div class="text-xs">${formatTime(chatSidebar.time)}</div>
+        </div>
+`
+    return chatElement;
+}
+
+//function to format time
+function formatTime(timeString) {
+    const time = new Date(timeString);
+    const formattedTime = time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+    const formattedDate = time.toLocaleDateString('en-US', { day: '2-digit', month: 'short' });
+    return formattedTime + ' ' + formattedDate;
+}
+
+//create user element
+function createUserElement(users) {
+  const userElement = document.createElement('a');
+  userElement.href = ``;
+  userElement.className = 'h-40 w-[90%] flex items-center my-2 justify-between px-2 shadow-xl rounded-xl';
+  userElement.innerHTML = `
+  <div class="h-32 w-32 bg-gray-200 rounded-full">
+    <img class="h-full w-full rounded-full" src="${users.profilePic}" />
+  </div>
+  <div class="flex items-center justify-between px-6 w-full">
+    <div class="text-xl text-gray-600 font-medium">${users.username}</div>
+    <div class="text-gray-500 font-medium">${users.firstName} ${users.lastName}</div>
+    <a href="#/profile/${users._id}" class="bg-blue-900 px-2 py-1 text-white rounded-lg hover:bg-yellow-600 ease-in duration-500 cursor-pointer">View Profile</a>
+    <a href="#" class="bg-green-700 px-2 py-1 text-white rounded-lg hover:bg-yellow-600 ease-in duration-500 cursor-pointer">Message</a>
+  </div>
+  `;
+
+  return userElement;
+}
 
 //create post element
 function createPostElement(post) {
@@ -864,9 +1086,10 @@ function createPostElement(post) {
           </div>
           <div class="text-xl font-bold text-gray-500 hover:text-blue-900 ease-in-out duration-400">${post.title}</div>
           ${post.description.split(' ').slice(0, 10).join(' ')}${post.description.split(' ').length > 10 ? '...' : ''}
-          <div class="flex justify-between items-center space-x-2 my-2">
-              <div class="text-green-600 font-bold text-md">$ ${post.budget}</div>
-              <div class="text-green-600 font-bold text-md">${post.days} days</div>
+          <div class="flex w-full justify-between items-center space-x-2 my-2">
+                <div class="text-green-600 font-bold text-md">$ ${post.budget}</div>
+                <div class="text-yellow-600 font-bold text-md">${post.days} days</div>
+                <div class="text-white bg-blue-900 px-2 py-1 rounded">${post.location}</div>
           </div>
       </div>
   `;
@@ -1109,4 +1332,202 @@ async function displayUserPosts(){
         } catch (error) {
         console.error(error);
         }
+}
+
+//function to get all users
+let users = [];
+async function getUsers() {
+    try {
+        const response = await fetch('/M00846514/users', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            },
+        });
+        users = await response.json();
+        return users;
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        return [];
+    }
+}
+
+//function which will searh from posts
+function search() {
+    const searchValue = document.getElementById('searchBar').value;
+    //search from title, description and location and from user.username
+    const searchResult = posts.filter(post => post.title.toLowerCase().includes(searchValue.toLowerCase()) || post.description.toLowerCase().includes(searchValue.toLowerCase()) || post.location.toLowerCase().includes(searchValue.toLowerCase()));
+    renderPosts(searchResult);
+}
+
+//function to search users
+function searchUsers() {
+    const searchValue = document.getElementById('searchUserBar').value;
+    //search from username, firstName, lastName
+    const searchResult = users.filter(user => user.username.toLowerCase().includes(searchValue.toLowerCase()) || user.firstName.toLowerCase().includes(searchValue.toLowerCase()) || user.lastName.toLowerCase().includes(searchValue.toLowerCase()));
+    renderUsers(searchResult);
+}
+filterPosts = [];
+//function to filter posts by budget
+function filterPostsByBudget() {
+    const budget = document.getElementById('filter_budget').value;
+    filterPosts = posts.filter(post => post.budget > budget);
+    renderPosts(filterPosts);
+}
+
+//function to filter posts by days
+function filterPostsByDays() {
+    const days = document.getElementById('filter_days').value;
+    filterPosts = posts.filter(post => post.days > days);
+    renderPosts(filterPosts);
+}
+
+//function to get all locations from posts
+let locations = [];
+function getLocations() {
+    // all locations must be unique
+    posts.forEach(post => {
+        if (!locations.includes(post.location)) {
+            locations.push(post.location);
+        }
+    });
+    // console.log(locations);
+    return locations;
+}
+
+//function on which click on location, posts will be filtered
+function filterPostsByLocation(location) {
+    filterPosts = posts.filter(post => post.location === location);
+    renderPosts(filterPosts);
+}
+
+sortedPosts = [];
+//function to sort posts by Max likes
+function sortPostsByMaxLikes() {
+    sortedPosts = posts.sort((a, b) => a.likes - b.likes);
+    renderPosts(sortedPosts);
+}
+//function to sort posts by Min likes
+function sortPostsByMinLikes() {
+    sortedPosts = posts.sort((a, b) => b.likes - a.likes);
+    renderPosts(sortedPosts);
+}
+
+//function to sort posts by Max comments
+function sortPostsByMaxComments() {
+    sortedPosts = posts.sort((a, b) => a.comments.length - b.comments.length);
+    renderPosts(sortedPosts);
+}
+
+//function to sort posts by Min comments
+function sortPostsByMinComments() {
+    sortedPosts = posts.sort((a, b) => b.comments.length - a.comments.length);
+    renderPosts(sortedPosts);
+}
+
+//function to sort posts by Max budget
+function sortPostsByMaxBudget() {
+    sortedPosts = posts.sort((a, b) => a.budget - b.budget);
+    renderPosts(sortedPosts);
+}
+
+//function to sort posts by Min budget
+function sortPostsByMinBudget() {
+    sortedPosts = posts.sort((a, b) => b.budget - a.budget);
+    renderPosts(sortedPosts);
+}
+
+//function to sort posts by max days
+function sortPostsByMaxDays() {
+    sortedPosts = posts.sort((a, b) => a.days - b.days);
+    renderPosts(sortedPosts);
+}
+
+//function to sort posts by min days
+function sortPostsByMinDays() {
+    sortedPosts = posts.sort((a, b) => b.days - a.days);
+    renderPosts(sortedPosts);
+}
+
+//function to get all chats from chat api
+let chats = [];
+async function getChats() {
+    try {
+        const response = await fetch('/M00846514/chats', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            },
+        });
+        chats = await response.json();
+        return chats;
+    } catch (error) {
+        console.error('Error fetching chats:', error);
+        return [];
+    }
+}
+
+//function to filter chats except logged in username
+let chatsSidebar = [];
+function filterChats(chats, users) {
+    const filteredChats = {};
+    chats.forEach(chat => {
+        const otherUser = chat.sender !== userProfile.username ? chat.sender : chat.receiver;
+        if (otherUser && otherUser !== userProfile.username) {
+            if (!filteredChats[otherUser] || filteredChats[otherUser].time < chat.time) {
+                filteredChats[otherUser] = { data: chat.data, time: chat.time };
+            }
+        }
+    });
+
+    chatsSidebar = Object.keys(filteredChats).map(username => {
+        const user = users.find(u => u.username === username);
+        return {
+            username,
+            data: filteredChats[username].data,
+            time: filteredChats[username].time,
+            profilePic: user ? user.profilePic : null
+        };
+    });
+
+    return chatsSidebar;
+}
+
+//post function to send message
+async function sendMessage() {
+    //text content from receiverUsername
+    const receiver = document.getElementById('receiverUsername').textContent;
+    const sender = userProfile.username;
+    const data = document.getElementById('messageField').value;
+
+    try {
+        const response = await fetch('/M00846514/messages', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ sender, receiver, data }),
+        });
+
+        // Check if response is successful (status code 2xx)
+        if (response.ok) {
+            const message = await response.json();
+            console.log('Message sent:', message);
+            await getChats();
+            renderChats(chatsSidebar);
+            renderMessages(senderMessages, receiverMessages);
+            alert('Message sent successfully!');
+            //clear message field
+            document.getElementById('messageField').value = '';
+        } else {
+            // If response is not successful, handle the error
+            throw new Error('Failed to send message. Server responded with status: ' + response.status);
+        }
+    } catch (error) {
+        console.error('Error sending message:', error);
+        // Handle the error gracefully, e.g., show a user-friendly message
+        alert('Failed to send message. Please try again later.');
+    }
 }
