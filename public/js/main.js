@@ -928,11 +928,20 @@ function renderMessages(senderMessages, receiverMessages) {
     messageElement.appendChild(messagesElement);
 }
 
-//message element
 function createMessageElement(senderMessages, receiverMessages, username) {
+    const containerElement = document.createElement('div');
+    containerElement.className = 'relative h-full w-full';
+
+    // Add username container
+    const usernameContainer = document.createElement('div');
+    usernameContainer.className = 'border-b-2 border-blue-900 py-4 fixed top-16 bg-white uppercase text-blue-900 font-medium flex w-full px-4 font-medium text-xl';
+    usernameContainer.id = 'receiverUsername';
+    usernameContainer.textContent = `${senderMessages[0].sender === username ? senderMessages[0].receiver : senderMessages[0].sender}`;
+    containerElement.appendChild(usernameContainer);
+
     const messageElement = document.createElement('div');
-    messageElement.className = 'h-full w-full flex flex-col space-y-4 overflow-y-scroll scrollbar-hide';
-    messageElement.innerHTML = '';
+    messageElement.className = 'h-full w-full flex flex-col space-y-4 overflow-y-scroll scrollbar-hide pb-16'; // Add bottom padding for the scroll bar
+    containerElement.appendChild(messageElement);
 
     // Combine sender and receiver messages into a single array
     const allMessages = senderMessages.concat(receiverMessages);
@@ -941,13 +950,6 @@ function createMessageElement(senderMessages, receiverMessages, username) {
     allMessages.sort((a, b) => {
         return new Date(a.time) - new Date(b.time);
     });
-
-    // Add username container
-    const usernameContainer = document.createElement('div');
-    usernameContainer.className = 'border-b-2 border-blue-900 py-4 flex w-full px-4 font-medium text-xl';
-    usernameContainer.id = 'receiverUsername';
-    usernameContainer.textContent = `${senderMessages[0].sender === username ? senderMessages[0].receiver : senderMessages[0].sender}`;
-    messageElement.appendChild(usernameContainer);
 
     // Iterate over messages
     allMessages.forEach(message => {
@@ -963,7 +965,7 @@ function createMessageElement(senderMessages, receiverMessages, username) {
         messageElement.appendChild(messageDiv);
     });
 
-    return messageElement;
+    return containerElement;
 }
 
 
