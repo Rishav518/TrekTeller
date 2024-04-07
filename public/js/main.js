@@ -22,15 +22,6 @@ function navigateTo(hash) {
       case "#/dashboard":
           DashboardPage();
           break;    
-      case "#/contact":
-          ContactPage();
-          break;
-      case "#/about":
-          AboutPage();
-          break;
-      case "#/trips":
-          TripsPage();
-          break;
       case "#/create-post":
           CreatePostPage();
           break;
@@ -64,115 +55,173 @@ function loadPage(content) {
 }
 
 //homepage
-function HomePage() {
-  const home = `    <div id="homepage" class="page bg-cover bg-center bg-no-repeat min-h-screen" style="background-image: url('./public/img/bg-blue.svg')">
-  <!-- Header starts -->
-   <nav class="flex items-center justify-center bg-cover px-4 py-2">
-       <div class="flex items-center justify-center lg:my-0 my-4 bg-black/70 rounded-lg lg:rounded-3xl lg:justify-between max-w-7xl w-full">
-           <a href="#/" class="w-[80%] lg:w-[25%] lg:py-0 py-4"><img src="./public/img/logo.png" /></a>
-           <div class="hidden lg:flex items-center px-4 py-4 w-[70%] justify-between space-x-4 text-white text-xl">
-               <a href="#/trips" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">All Trips</a>
-               <a href="#/about" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">About</a>
-               <a href="#/contact" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Contact Us</a>
-               <a href="#/signup" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Signup</a>
-               <a href="#/login" class="bg-[#4facf7] px-4 py-1 rounded-xl hover:bg-cyan-700 ease-in-out duration-400 cursor-pointer">Login</a>
-           </div>
-       </div>
-   </nav>
-   <!-- Header ends -->
-   <!-- Hero Section starts  -->
-   <div class="flex items-center justify-center px-4">
-       <div class="flex flex-col lg:flex-row text-white items-center justify-center max-w-7xl w-full lg:my-8">
-           <div class="flex items-center w-[90%] lg:w-[60%] min-h-72">
-               <div class="flex flex-col space-y-6">
-                   <div class="text-5xl font-medium my-6">Explore Beyond Boundaries - Your Journey Awaits!</div>
-                   <div class="text-xl">Discover the Treasures of Travel"</div>
-                   <div>
-                       <a href="#/login" class="border-2 border-white hover:bg-white hover:text-black ease-in-out duration-500 cursor-pointer font-medium px-4 py-2 rounded-3xl my-6">Post your adventure</a>
-                   </div>
-                   <div class="text-xl font-medium mt-6 mb-4">Follow us</div>
-                   <div class="flex space-x-4 items-center justify-start">
-                       <a href="https://facebook.com" class="text-3xl hover:text-cyan-500 hover:scale-105 ease-in-out duration-500"><ion-icon name="logo-facebook"></ion-icon></a>
-                       <a href="https://twitter.com" class="text-3xl hover:text-cyan-500 hover:scale-105 ease-in-out duration-500"><ion-icon name="logo-twitter"></ion-icon></a>
-                       <a href="https://instagram" class="text-3xl hover:text-cyan-500 hover:scale-105 ease-in-out duration-500"><ion-icon name="logo-instagram"></ion-icon></a>
-                       <a href="https://reddit.com" class="text-3xl hover:text-cyan-500 hover:scale-105 ease-in-out duration-500"><ion-icon name="logo-reddit"></ion-icon></a>
-                   </div>
-               </div>
-           </div>
-               <div class="flex items-center justify-center w-[90%] lg:w-[40%] lg:min-h-96 overflow-hidden">
-                   <img class="h-full w-full" src="./public/img/hero1.png" />
-               </div>
-       </div>
-   </div>
+async function HomePage() {
+    // Fetch locations, top locations, and top posts before loading the page
+    try {
+        const locations = await getLocations();
+        const topLocations = await getTopLocations();
+        const topPosts = await getTopPosts();
+   
+    const home = `
+    <div id="homepage" class="page bg-cover bg-center bg-no-repeat min-h-screen" style="background-image: url('./public/img/bg-blue.svg')">
+    <!-- Header starts -->
+     <nav class="flex items-center justify-center bg-cover px-4 py-2">
+         <div class="flex items-center justify-center lg:my-0 my-4 bg-black/70 rounded-lg lg:rounded-3xl lg:justify-between max-w-7xl w-full">
+             <a href="#/" class="w-[80%] lg:w-[25%] lg:py-0 py-4"><img src="./public/img/logo.png" /></a>
+             <div class="hidden lg:flex items-center px-4 py-4 w-[70%] justify-between space-x-4 text-white text-xl">
+                 <a href="#allTrips" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">All Trips</a>
+                 <a href="#about" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">About</a>
+                 <a href="#contact" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Contact Us</a>
+                 <a href="#/signup" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Signup</a>
+                 <a href="#/login" class="bg-[#4facf7] px-4 py-1 rounded-xl hover:bg-green-600 ease-in-out duration-500 cursor-pointer">Login</a>
+             </div>
+         </div>
+     </nav>
+     <!-- Header ends -->
+     <!-- Hero Section starts  -->
+     <div class="flex items-center justify-center px-4">
+         <div class="flex flex-col lg:flex-row text-white items-center justify-center max-w-7xl w-full lg:my-8">
+             <div class="flex items-center w-[90%] lg:w-[60%] min-h-72">
+                 <div class="flex flex-col space-y-6">
+                     <div class="text-5xl font-medium my-6">Explore Beyond Boundaries - Your Journey Awaits!</div>
+                     <div class="text-xl">Discover the Treasures of Travel"</div>
+                     <div>
+                         <a href="#/login" class="border-2 border-white hover:bg-white hover:text-black ease-in duration-500 cursor-pointer font-medium px-4 py-2 rounded-3xl my-6">Post your adventure</a>
+                     </div>
+                     <div class="text-xl font-medium mt-6 mb-4">Follow us</div>
+                     <div class="flex space-x-4 items-center justify-start ">
+                         <a href="https://facebook.com" class="text-3xl hover:text-white  text-blue-700 hover:scale-105 ease-in-out duration-500"><ion-icon name="logo-facebook"></ion-icon></a>
+                         <a href="https://twitter.com" class="text-3xl hover:text-white  text-cyan-500 hover:scale-105 ease-in-out duration-500"><ion-icon name="logo-twitter"></ion-icon></a>
+                         <a href="https://instagram" class="text-3xl  hover:text-white text-fuchsia-500 hover:scale-105 ease-in-out duration-500"><ion-icon name="logo-instagram"></ion-icon></a>
+                         <a href="https://reddit.com" class="text-3xl  hover:text-white text-red-500 hover:scale-105 ease-in-out duration-500"><ion-icon name="logo-reddit"></ion-icon></a>
+                     </div>
+                 </div>
+             </div>
+                 <div class="flex items-center justify-center w-[90%] lg:w-[40%] lg:min-h-96 overflow-hidden">
+                     <img class="h-full w-full" src="./public/img/hero1.png" />
+                 </div>
+         </div>
+     </div>
+  </div>
+  <!-- Hero Section ends -->
+  <div class="flex items-start justify-center bg-white">
+    <div class="lg:w-1/2 w-[80%] h-60 bg-[#4facf7] -mt-16 lg:-mt-32 flex items-center justify-center font-medium text-xl px-4 text-center italic shadow-xl">
+        <div>"Every journey leaves behind a tale waiting to be told. Share your adventures, inspire wanderlust, and become a part of the vibrant tapestry of tales on TrekTeller."</div>
+    </div>
+  </div>
+  <div class="flex flex-col items-center justify-start py-2">
+    <div class="text-4xl my-4 font-medium">Top Destinations</div>
+        <div class=" items-center lg:space-x-4 space-x-0 lg:space-y-0 space-y-4 flex lg:flex-row p-2 flex-col justify-center w-3/4">
+            <!-- post element starts  -->
+            ${topLocations.map(location => `
+            <a id="topLocations" href="#/login" class="w-full lg:w-1/4 h-72 bg-gray-200 shadow-xl overflow-hidden rounded-3xl flex items-end px-4 py-4 bg-no-repeat bg-cover" style="background-image: url('${location.featured_image}');">
+              <div class="bg-white font-medium px-2 py-1 rounded flex flex-col items-center justify-center ">
+                <div class="flex items-center justify-center space-x-1">
+                  <ion-icon class="text-lg" name="location-outline"></ion-icon>
+                  <div>${location._id}</div>
+                </div>
+                <div>${location.postCount} Trips</div>
+              </div>
+            </a>
+          `).join('')}
+            <!-- post element ends -->
+        </div>
+  </div>
+    <div id="about" class='mt-2  pt-1  bg-gradient-to-r from-black via-[#4facf7] to-black '>
+    <div class='flex flex-col lg:flex-row items-center justify-center lg:h-72 text-blue-800 font-serif bg-white py-2'>
+        <div class='w-3/4 lg:h-72 px-2 lg:w-1/4 flex items-start justify-center'>
+            <div class='flex-col'>
+                <div class='text-3xl font-medium text-center my-8'>Create Account</div>
+                <div class='flex items-center justify-center my-2'>
+                <ion-icon name="person-add-outline" class="text-7xl  text-blue-800"></ion-icon>
+                </div>
+                <div class='italic'>Create an account on TrekTeller</div>
+            </div>
+        </div>
+        <div class='w-3/4 lg:h-72 px-2 lg:w-1/4 flex items-start justify-center'>
+            <div class='flex-col'>
+                <div class='text-3xl font-medium text-center my-8'>Login</div>
+                <div class='flex items-center justify-center my-2'>
+                    <ion-icon name="log-in-outline" class="text-7xl  text-blue-800"></ion-icon>                
+                </div>
+                <div class='italic'>Login to access dashboard</div>
+            </div>
+        </div>
+        <div class='w-3/4 lg:h-72 px-2 lg:w-1/4 flex items-start justify-center'>
+            <div class='flex-col'>
+                <div class='text-3xl font-medium text-center my-8'>Post</div>
+                <div class='flex items-center justify-center my-2'>
+                    <ion-icon name="images-outline" class="text-7xl  text-blue-800"></ion-icon>                
+                </div>
+                <div class='italic'>Post your adventure</div>
+            </div>
+        </div>
+        <div class='w-3/4 lg:h-72 px-2 lg:w-1/4 flex items-start justify-center '>
+            <div class='flex-col'>
+                <div class='text-3xl font-medium text-center my-8'>Share</div>
+                <div class='flex items-center justify-center my-2'>
+                    <ion-icon name="share-social-outline" class="text-7xl text-blue-800"></ion-icon>                
+                </div>
+                <div class='italic'>Share your trips</div>
+            </div>
+        </div>
+    </div>
 </div>
-<!-- Hero Section ends -->
+    <div id="allTrips" class="flex flex-col items-center justify-start py-4 bg-gradient-to-r from-black via-[#4facf7] to-black ">
+    <div  class="text-4xl my-4 font-medium text-white">Featured Trips</div>
+        <div class=" items-center lg:space-x-4 space-x-0 lg:space-y-0 space-y-4 flex lg:flex-row p-2 flex-col justify-center w-3/4">
+            <!-- post element starts -->
+            ${topPosts.map(post => `
+            <a href="#/login" class="w-full lg:w-1/4 h-72 bg-gray-200 shadow-xl overflow-hidden rounded-lg flex items-end justify-between px-4 py-4 bg-no-repeat bg-cover" style="background-image: url('${post.featured_image}');">
+                <div class="bg-white rounded px-2 py-1">${post.posted_by}</div>
+                <div class="bg-green-700 text-white rounded px-2 py-1">$${post.budget}</div>
+                <div class="bg-blue-900 text-white font-medium px-2 py-1 rounded flex flex-col items-center justify-center ">
+                    <div class="flex items-center justify-center space-x-1">
+                        <ion-icon class="text-lg" name="location-outline"></ion-icon>
+                        <div>${post.location}</div>
+                    </div>
+                </div>
+            </a>
+          `).join('')}
+            <!-- post element ends -->
+        </div>
+  </div>
+  <div id="contact" class="grid ">
+    <div class="bg-gradient-to-r from-black via-[#4facf7] to-black h-72 flex items-center justify-center">
+      <div class="flex flex-col max-w-4xl items-center justify-center">
+          <div class=" text-white text-4xl font-bold">Contact Us</div>
+          <div class="m-2 text-white ">Contact us by filling this contact form.</div>
+      </div>
+  </div>
+  <div class="bg-white my-4 h-auto flex justify-center">
+      <div class="h-auto bg-white -mt-20 w-[80%] md:w-1/2 text-stone-700 font-medium shadow-lg">
+          <div class="m-4 font-bold">Your E-mail Address </div> 
+          <input placeholder="email "
+              class="border-2 ml-4 border-gray-400 h-10 w-[90%] text-gray-400 rounded px-4">
+          <div class="m-4 font-bold">Subject </div> 
+          <input placeholder="subject"
+              class="border-2 ml-4 border-gray-400 h-10 w-[90%] text-gray-400 rounded px-4">
+          <div class="m-4 font-bold">How can we help? </div> 
+          <input placeholder="message"
+              class="border-2 px-4 ml-4 border-gray-400 h-20 w-[90%] text-gray-400 rounded">
+          <div class="bg-blue-900 px-2 py-1 m-4 text-white w-max font-normal hover:bg-blue-800 shadow-lg rounded ease-in-out duration-500 cursor-pointer">Send</div>
+      </div>
+  </div>
+  </div>
+  
+    <footer class="flex items-center justify-between py-2 bg-gradient-to-r from-black via-[#4facf7] to-black text-white px-6">
+    <div>Copyright &copy; Dristi Bhugun</div>
+    <div>MiddleSex University, MRU</div>
+  </footer>
+  </div>  
+    `;
+loadPage(home);
+} catch (error) {
+console.error('Error loading home page:', error);
+}
+}
 
-</div>`;
-  loadPage(home);
-}
-//about us page
-function AboutPage() {
-  const about = `<div id="" class="page bg-cover bg-center bg-no-repeat min-h-screen" style="background-image: url('./public/img/bg-blue.svg')">
-  <!-- Header starts -->
-   <nav class="flex items-center justify-center bg-cover px-4 py-2">
-       <div class="flex items-center justify-center lg:my-0 my-4 bg-black/70 rounded-lg lg:rounded-3xl lg:justify-between max-w-7xl w-full">
-           <a href="#/" class="w-[80%] lg:w-[25%] lg:py-0 py-4"><img src="./public/img/logo.png" /></a>
-           <div class="hidden lg:flex items-center px-4 py-4 w-[70%] justify-between space-x-4 text-white text-xl">
-               <a href="#/trips" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">All Trips</a>
-               <a href="#/about" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">About</a>
-               <a href="#/contact" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Contact Us</a>
-               <a href="#/signup" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Signup</a>
-               <a href="#/login" class="bg-[#4facf7] px-4 py-1 rounded-xl hover:bg-cyan-700 ease-in-out duration-400 cursor-pointer">Login</a>
-           </div>
-       </div>
-   </nav>
-   <!-- Header ends -->
-    <div class="flex items-center justify-center text-2xl text-[#4facf7] bg-white px-2 py-1 rounded-lg font-bold ">About Us</div>
-   </div>`;
-  loadPage(about);
-}
-//contact us page
-function ContactPage() {
-  const contact = `<div id="" class="page bg-cover bg-center bg-no-repeat min-h-screen" style="background-image: url('./public/img/bg-blue.svg')">
-  <!-- Header starts -->
-   <nav class="flex items-center justify-center bg-cover px-4 py-2">
-       <div class="flex items-center justify-center lg:my-0 my-4 bg-black/70 rounded-lg lg:rounded-3xl lg:justify-between max-w-7xl w-full">
-           <a href="#/" class="w-[80%] lg:w-[25%] lg:py-0 py-4"><img src="./public/img/logo.png" /></a>
-           <div class="hidden lg:flex items-center px-4 py-4 w-[70%] justify-between space-x-4 text-white text-xl">
-               <a href="#/trips" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">All Trips</a>
-               <a href="#/about" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">About</a>
-               <a href="#/contact" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Contact Us</a>
-               <a href="#/signup" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Signup</a>
-               <a href="#/login" class="bg-[#4facf7] px-4 py-1 rounded-xl hover:bg-cyan-700 ease-in-out duration-400 cursor-pointer">Login</a>
-           </div>
-       </div>
-   </nav>
-   <!-- Header ends -->
-   <div class="flex items-center justify-center text-2xl text-[#4facf7] bg-white px-2 py-1 rounded-lg font-bold ">Contact Us</div>
-   </div>`;
-  loadPage(contact);
-}
-//trips page
-function TripsPage() {
-  const trips = `<div id="" class="page bg-cover bg-center bg-no-repeat min-h-screen" style="background-image: url('./public/img/bg-blue.svg')">
-  <!-- Header starts -->
-   <nav class="flex items-center justify-center bg-cover px-4 py-2">
-       <div class="flex items-center justify-center lg:my-0 my-4 bg-black/70 rounded-lg lg:rounded-3xl lg:justify-between max-w-7xl w-full">
-           <a href="#/" class="w-[80%] lg:w-[25%] lg:py-0 py-4"><img src="./public/img/logo.png" /></a>
-           <div class="hidden lg:flex items-center px-4 py-4 w-[70%] justify-between space-x-4 text-white text-xl">
-               <a href="#/trips" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">All Trips</a>
-               <a href="#/about" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">About</a>
-               <a href="#/contact" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Contact Us</a>
-               <a href="#/signup" class="hover:text-gray-300 hover:border-b hover:border-gray-300 ease-in-out duration-400 cursor-pointer">Signup</a>
-               <a href="#/login" class="bg-[#4facf7] px-4 py-1 rounded-xl hover:bg-cyan-700 ease-in-out duration-400 cursor-pointer">Login</a>
-           </div>
-       </div>
-   </nav>
-   <!-- Header ends -->
-   <div class="flex items-center justify-center text-2xl text-[#4facf7] bg-white px-2 py-1 rounded-lg font-bold ">All Trips</div>
-   </div>`;
-  loadPage(trips);
-}
+
 //signup page
 function SignupPage() {
   const signup = `    <div class="bg-cover bg-center bg-no-repeat min-h-screen" style="background-image: url('../src/img/bg-white.svg')">
@@ -297,11 +346,11 @@ function DashboardPage() {
 </div>
         <div class="font-medium my-2 text-blue-900 border-b-2 border-blue-900 w-full">Sort By</div>
         <div class="flex-wrap flex space-x-2">
-          <div onclick="sortPostsByMinLikes()" class="font-medium flex items-center my-2 text-green-800 cursor-pointer ease-in duration-500 hover:scale-105 px-2 py-1 border-2 rounded-xl border-green-800">
+          <div onclick="sortPostsByMaxLikes()" class="font-medium flex items-center my-2 text-green-800 cursor-pointer ease-in duration-500 hover:scale-105 px-2 py-1 border-2 rounded-xl border-green-800">
             <ion-icon name="arrow-up-outline"></ion-icon>
             <div>Likes</div>
           </div>
-          <div onclick="sortPostsByMaxLikes()" class="font-medium flex items-center my-2 text-fuchsia-600 cursor-pointer ease-in duration-500 hover:scale-105 px-2 py-1 border-2 rounded-xl border-fuchsia-600">
+          <div onclick="sortPostsByMinLikes()" class="font-medium flex items-center my-2 text-fuchsia-600 cursor-pointer ease-in duration-500 hover:scale-105 px-2 py-1 border-2 rounded-xl border-fuchsia-600">
             <ion-icon name="arrow-down-outline"></ion-icon>
             <div>Likes</div>
           </div>
@@ -370,6 +419,8 @@ function Users() {
           
         </div>
     </div>
+ 
+
     
     
     <!-- Users Section ends -->
@@ -383,7 +434,7 @@ async function usersProfile() {
     const tokens = window.location.href.split('/');
     const userId = tokens[tokens.length - 1];
     const userData = users.find(user => user._id === userId);
-    const profile = `  <div class="max-h-screen ">
+    const profile = `      <div class="max-h-screen ">
     <!-- Header starts -->
      <nav class="flex items-center justify-center bg-cover bg-blue-900 h-16">
          <div class="flex items-center justify-center lg:my-0 my-4  rounded-lg lg:rounded-3xl lg:justify-between max-w-7xl w-full">
@@ -403,7 +454,7 @@ async function usersProfile() {
             <h2 class="text-2xl text-center font-bold mb-4">Profile</h2>
             <div class="flex flex-col items-center justify-center">
             <img id="profilePic" class="w-40 h-40 bg-gray-300 rounded-full" src="${userData?.profilePic || 'default-profile-pic.jpg'}" alt="No picture" />
-            <a href="#/chats" class="bg-blue-900 px-2 py-1 my-2 rounded text-white hover:bg-green-700 ease-in-out duration-500 cursor-pointer">Message</a>
+            <div onclick="openForm()" class="bg-blue-900 px-2 py-1 my-2 rounded text-white hover:bg-green-700 ease-in-out duration-500 cursor-pointer">Message</div>
             <div class="shadow-xl p-4 my-6 rounded-xl bg-gray-100 w-1/2 text-center">${userData?.bio || 'Add Bio'}</div>
             <div class="flex items-center justify-between w-3/4 border-b-2 border-gray-500">
                 <span class="text-lg font-medium text-gray-600">Username:</span>
@@ -426,6 +477,36 @@ async function usersProfile() {
     </div>
     
   </div>
+  <div>
+</div>
+
+<div id="messageForm" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+    <div class="bg-white p-8 rounded-lg shadow-lg">
+            <div class="mb-4">
+                <div class="flex space-x-2">
+                    <label id="receiverUsername" for="message" class="block text-gray-700 text-sm mb-2">To</label>
+                    <label id="receiverUsername" for="message" class="block text-gray-700 text-sm mb-2">${userData?.username}</label>
+                </div>
+                <div class="flex space-x-2">
+                    <label  for="message" class="block text-gray-700 text-sm mb-2">From</label>
+                    <label  for="message" class="block text-gray-700 text-sm mb-2">${userProfile?.username}</label>
+                </div>
+                <textarea id="messageField" name="message" rows="4" required
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    placeholder="Enter your message"></textarea>
+            </div>
+            <div class="flex justify-between">
+                <button  onclick="popupMessage()"
+                    class="bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Send
+                </button>
+                <button onclick="closeForm()"
+                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Close
+                </button>
+            </div>
+    </div>
+</div>
   `
     loadPage(profile);
 }
@@ -836,6 +917,9 @@ async function getPosts() {
           },
       });
       posts = await response.json();
+        posts.sort((a, b) => {
+            return new Date(b.date) - new Date(a.date);
+        });
     //   console.log('Posts:', posts);
       return posts;
 
@@ -854,7 +938,6 @@ async function handleHashChange() {
         if(posts){
             posts = await getPosts();
             getUsers();
-            getLocations();
         }
         renderPosts(posts);
       } catch (error) {
@@ -920,31 +1003,29 @@ function renderChats(chatSidebar) {
     });
 }
 
-//render chats in messages-container div in chats page
-function renderMessages(senderMessages, receiverMessages) {
+// Render chats in messages-container div in chats page
+function renderMessages(allMessages, username) {
     const messageElement = document.getElementById('messageElement');
     messageElement.innerHTML = '';
-    const messagesElement = createMessageElement(senderMessages, receiverMessages);
+    const messagesElement = createMessageElement(allMessages, username);
     messageElement.appendChild(messagesElement);
 }
 
-function createMessageElement(senderMessages, receiverMessages, username) {
+// Create message element
+function createMessageElement(allMessages, username) {
     const containerElement = document.createElement('div');
-    containerElement.className = 'relative h-full w-full';
+    containerElement.className = 'relative h-[500px] w-full';
 
-    // Add username container
+    const messageElement = document.createElement('div');
+    messageElement.className = 'h-full w-full flex flex-col space-y-4 overflow-y-scroll scrollbar-hide pb-16'; 
+    containerElement.appendChild(messageElement);
+
+     // Add username container
     const usernameContainer = document.createElement('div');
     usernameContainer.className = 'border-b-2 border-blue-900 py-4 fixed top-16 bg-white uppercase text-blue-900 font-medium flex w-full px-4 font-medium text-xl';
     usernameContainer.id = 'receiverUsername';
-    usernameContainer.textContent = `${senderMessages[0].sender === username ? senderMessages[0].receiver : senderMessages[0].sender}`;
+    usernameContainer.textContent = `${allMessages[0].sender === username ? allMessages[0].receiver : allMessages[0].sender}`;
     containerElement.appendChild(usernameContainer);
-
-    const messageElement = document.createElement('div');
-    messageElement.className = 'h-full w-full flex flex-col space-y-4 overflow-y-scroll scrollbar-hide pb-16'; // Add bottom padding for the scroll bar
-    containerElement.appendChild(messageElement);
-
-    // Combine sender and receiver messages into a single array
-    const allMessages = senderMessages.concat(receiverMessages);
 
     // Sort messages by time in ascending order
     allMessages.sort((a, b) => {
@@ -955,19 +1036,47 @@ function createMessageElement(senderMessages, receiverMessages, username) {
     allMessages.forEach(message => {
         const messageDiv = document.createElement('div');
         const isSender = message.sender === username;
-        messageDiv.className = isSender ? 'flex items-center justify-end w-full px-4' : 'flex items-center justify-start w-full px-4';
+        const backgroundColor = message.backgroundColor;
+        const textAlignment = message.textAlignment;
+        messageDiv.className = isSender ? 'flex items-center justify-end w-full px-10' : 'flex items-center justify-start w-full px-10';
         messageDiv.innerHTML = `
-            <div class="p-4 rounded-xl ${isSender ? 'bg-blue-900 text-white' : 'bg-green-700 text-white'} max-w-[60%]">
+            <div class="p-4 rounded-xl ${backgroundColor} text-white max-w-[60%]">
                 <div class="text-lg">${message.data}</div>
-                <div class="text-xs ${isSender ? 'text-right' : 'text-left'}">${formatTime(message.time)}</div>
+                <div class="text-xs ${textAlignment}">${formatTime(message.time)}</div>
             </div>
         `;
+
         messageElement.appendChild(messageDiv);
     });
 
     return containerElement;
 }
 
+let allMessages = [];
+
+// Get sender and receiver messages
+function getSenderAndReceiverMessages(senderMessages, receiverMessages, userProfile) {
+    // Combine sender and receiver messages into a single array
+    allMessages = [...senderMessages, ...receiverMessages];
+
+    // Sort messages by time in ascending order
+    allMessages.sort((a, b) => {
+        return new Date(a.time) - new Date(b.time);
+    });
+
+    // Apply classes based on sender or receiver
+    allMessages.forEach(message => {
+        if (message.sender === userProfile.username) {
+            message.backgroundColor = 'bg-blue-900';
+            message.textAlignment = 'text-right';
+        } else {
+            message.backgroundColor = 'bg-green-700';
+            message.textAlignment = 'text-left';
+        }
+    });
+
+    return allMessages;
+}
 
 let filteredMessages = [];
 //function which will filter from chats array where username == clicked username
@@ -998,7 +1107,6 @@ function getSenderMessages(filteredMessages, clickedUsername) {
     senderMessages = filteredMessages.filter((message) => {
         return message.sender === clickedUsername;
     });
-    console.log('Sender Messages:', senderMessages)
     return senderMessages;
 }
 
@@ -1007,7 +1115,6 @@ function getReceiverMessages(filteredMessages, currentUsername) {
     receiverMessages = filteredMessages.filter((message) => {
         return message.receiver === currentUsername;
     });
-    console.log('Receiver Messages:', receiverMessages)
     return receiverMessages;
 }
 
@@ -1019,7 +1126,8 @@ function createChatElement(chatSidebar) {
         const filteredMessages = filterMessages(chats, clickedUsername);
         getSenderMessages(filteredMessages, clickedUsername);
         getReceiverMessages(filteredMessages, clickedUsername);
-        renderMessages(senderMessages, receiverMessages);
+        getSenderAndReceiverMessages(senderMessages, receiverMessages, userProfile);
+        renderMessages(allMessages, userProfile.username);
     }
     chatElement.className = 'my-2 flex items-center justify-start space-x-4 border-b-2 w-full px-6 border-blue-900 hover:shadow-xl py-2 ease-in duration-500 cursor-pointer';
     chatElement.innerHTML = `
@@ -1045,19 +1153,45 @@ function formatTime(timeString) {
 
 //create user element
 function createUserElement(users) {
-  const userElement = document.createElement('a');
-  userElement.href = ``;
+  const userElement = document.createElement('div');
   userElement.className = 'h-40 w-[90%] flex items-center my-2 justify-between px-2 shadow-xl rounded-xl';
   userElement.innerHTML = `
   <div class="h-32 w-32 bg-gray-200 rounded-full">
     <img class="h-full w-full rounded-full" src="${users.profilePic}" />
   </div>
   <div class="flex items-center justify-between px-6 w-full">
-    <div class="text-xl text-gray-600 font-medium">${users.username}</div>
+    <div class="text-xl text-gray-600 font-medium">${users.username === userProfile.username ? ' (Me)' : ''}</div>
     <div class="text-gray-500 font-medium">${users.firstName} ${users.lastName}</div>
-    <a href="#/profile/${users._id}" class="bg-blue-900 px-2 py-1 text-white rounded-lg hover:bg-yellow-600 ease-in duration-500 cursor-pointer">View Profile</a>
-    <a href="#" class="bg-green-700 px-2 py-1 text-white rounded-lg hover:bg-yellow-600 ease-in duration-500 cursor-pointer">Message</a>
+    ${users.username === userProfile.username ? `<a href="#/profile" class="bg-blue-900 px-2 py-1 text-white rounded-lg hover:bg-yellow-600 ease-in duration-500 cursor-pointer">View Profile</a>` : `<a href="#/profile/${users._id}" class="bg-blue-900 px-2 py-1 text-white rounded-lg hover:bg-yellow-600 ease-in duration-500 cursor-pointer">View Profile</a>`}
+    ${users.username !== userProfile.username ? ` <div onclick="openForm()" class="bg-green-700 px-2 py-1 text-white rounded-lg hover:bg-yellow-600 ease-in duration-500 cursor-pointer">Message</div>` : ''}
   </div>
+  <div id="messageForm" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+  <div class="bg-white p-8 rounded-lg shadow-lg">
+          <div class="mb-4">
+                <div class="flex space-x-2">
+                    <label id="receiverUsername" for="message" class="block text-gray-700 text-sm mb-2">To</label>
+                    <label id="receiverUsername" for="message" class="block text-gray-700 text-sm mb-2">${users?.username}</label>
+                </div>
+                <div class="flex space-x-2">
+                    <label  for="message" class="block text-gray-700 text-sm mb-2">From</label>
+                    <label  for="message" class="block text-gray-700 text-sm mb-2">${userProfile?.username}</label>
+                </div>
+              <textarea id="messageField" name="message" rows="4" required
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  placeholder="Enter your message"></textarea>
+          </div>
+          <div class="flex justify-between">
+              <button type="submit"  onclick="popupMessage()"
+                  class="bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                  Send
+              </button>
+              <button onclick="closeForm()"
+                  class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                  Close
+              </button>
+          </div>
+  </div>
+</div>
   `;
 
   return userElement;
@@ -1086,7 +1220,7 @@ function createPostElement(post) {
                   </div>
               </div>
           </div>
-          <div class="text-xl font-bold text-gray-500 hover:text-blue-900 ease-in-out duration-400">${post.title}</div>
+          <div class="text-xl font-bold text-gray-500 hover:text-blue-900 ease-in-out duration-400">${post.title.split(' ').slice(0, 6).join(' ')}${post.title.split(' ').length > 6 ? '...' : ''}</div>
           ${post.description.split(' ').slice(0, 10).join(' ')}${post.description.split(' ').length > 10 ? '...' : ''}
           <div class="flex w-full justify-between items-center space-x-2 my-2">
                 <div class="text-green-600 font-bold text-md">$ ${post.budget}</div>
@@ -1385,17 +1519,22 @@ function filterPostsByDays() {
     renderPosts(filterPosts);
 }
 
-//function to get all locations from posts
+//function to get all locations from /allLocations
 let locations = [];
-function getLocations() {
-    // all locations must be unique
-    posts.forEach(post => {
-        if (!locations.includes(post.location)) {
-            locations.push(post.location);
-        }
-    });
-    // console.log(locations);
-    return locations;
+async function getLocations() {
+    try {
+        const response = await fetch('/M00846514/allLocations', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        locations = await response.json();
+        return locations;
+    } catch (error) {
+        console.error('Error fetching locations:', error);
+        return [];
+    }
 }
 
 //function on which click on location, posts will be filtered
@@ -1503,7 +1642,11 @@ async function sendMessage() {
     const receiver = document.getElementById('receiverUsername').textContent;
     const sender = userProfile.username;
     const data = document.getElementById('messageField').value;
-
+    // Check if message is empty
+    if (!data) {
+        alert('Please enter a message.');
+        return;
+    }
     try {
         const response = await fetch('/M00846514/messages', {
             method: 'POST',
@@ -1517,12 +1660,12 @@ async function sendMessage() {
         if (response.ok) {
             const message = await response.json();
             console.log('Message sent:', message);
-            await getChats();
-            renderChats(chatsSidebar);
-            renderMessages(senderMessages, receiverMessages);
-            alert('Message sent successfully!');
+            // await getChats();
+            // renderChats(chatsSidebar);
+            // renderMessages(senderMessages, receiverMessages);
+            // alert('Message sent successfully!');
             //clear message field
-            document.getElementById('messageField').value = '';
+            document.getElementById('messageField').value = '';            
         } else {
             // If response is not successful, handle the error
             throw new Error('Failed to send message. Server responded with status: ' + response.status);
@@ -1533,3 +1676,59 @@ async function sendMessage() {
         alert('Failed to send message. Please try again later.');
     }
 }
+
+//function to get topPosts
+let topPosts = [];
+async function getTopPosts() {
+    try {
+        const response = await fetch('/M00846514/topPosts', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        topPosts = await response.json();
+        return topPosts;
+    } catch (error) {
+        console.error('Error fetching top posts:', error);
+        return [];
+    }
+}
+
+//function to get topLocations
+let topLocations = [];
+async function getTopLocations() {
+    try {
+        const response = await fetch('/M00846514/topLocations', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        topLocations = await response.json();
+        return topLocations;
+    } catch (error) {
+        console.error('Error fetching top locations:', error);
+        return [];
+    }
+}
+
+function openForm() {
+    document.getElementById("messageForm").classList.remove("hidden");
+}
+
+function closeForm() {
+    document.getElementById("messageForm").classList.add("hidden");
+}
+
+function popupMessage(){
+    if(document.getElementById('messageField').value === ''){
+        alert('Please enter a message');
+        return;
+    } else{
+        sendMessage();
+        closeForm();
+        window.location.hash = '#/chats';
+    }
+}
+

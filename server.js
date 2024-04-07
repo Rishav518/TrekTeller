@@ -333,6 +333,55 @@ app.get(`/${ID}/chats`, authenticateToken, (req, res) => {
     .catch(err => console.log(err));
 });
 
+app.get(`/${ID}/allLocations`, async (req, res) => {
+    try {
+      const uniqueLocations = await Post.distinct('location');
+      res.json(uniqueLocations);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Server Error' });
+    }
+  });
+
+  
+app.get(`/${ID}/topLocations`, async (req, res) => {
+  try {
+    const locations = await Post.aggregate([
+      { 
+        $group: { 
+          _id: '$location', 
+          postCount: { $sum: 1 },
+          featured_image: { $first: '$featured_image' } 
+        } 
+      }, 
+      { $sort: { postCount: -1 } }, 
+      { $limit: 4 } 
+    ]);
+
+    res.json(locations);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
+
+app.get(`/${ID}/topPosts`, async (req, res) => {
+  try {
+    // Aggregate query to sort posts by number of likes and limit to top 4
+    const topPosts = await Post.aggregate([
+      { $sort: { likes: -1 } }, // Sort by likes in descending order
+      { $limit: 4 } // Limit to top 4 posts
+    ]);
+
+    res.json(topPosts);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
+
 app.use(express.static('public'));
 app.use('/public', express.static('public'));
 
