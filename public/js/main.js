@@ -173,9 +173,9 @@ async function HomePage() {
             <!-- post element starts -->
             ${topPosts.map(post => `
             <a href="#/login" class="w-full lg:w-1/4 h-72 bg-gray-200 shadow-xl overflow-hidden rounded-lg flex items-end justify-between px-4 py-4 bg-no-repeat bg-cover" style="background-image: url('${post.featured_image}');">
-                <div class="bg-white rounded px-2 py-1">${post.posted_by}</div>
-                <div class="bg-green-700 text-white rounded px-2 py-1">$${post.budget}</div>
-                <div class="bg-blue-900 text-white font-medium px-2 py-1 rounded flex flex-col items-center justify-center ">
+                <div class="bg-white text-sm rounded px-2 py-1">${post.posted_by}</div>
+                <div class="bg-green-700 text-sm text-white rounded px-2 py-1">$${post.budget}</div>
+                <div class="bg-blue-900 text-sm text-white font-medium px-2 py-1 rounded flex flex-col items-center justify-center ">
                     <div class="flex items-center justify-center space-x-1">
                         <ion-icon class="text-lg" name="location-outline"></ion-icon>
                         <div>${post.location}</div>
@@ -328,7 +328,7 @@ function DashboardPage() {
   <!-- Header ends -->
   <!-- Dashboard Section starts  -->
   <div class="h-screen overflow-y-scroll scrollbar-hide flex-col flex lg:flex-row">
-      <div class="bg-gray-100 lg:w-[20%] flex flex-col items-center p-2 justify-start px-6 lg:border-r-4 min-h-40 overflow-scroll scrollbar-hide lg:border-b-0 border-b-2 border-blue-900">
+      <div class="bg-gray-100 lg:w-[20%] flex flex-col items-center p-2 justify-start overflow-y-scroll px-6 lg:border-r-4 min-h-40  scrollbar-hide lg:border-b-0 border-b-2 border-blue-900">
         <div class="font-medium my-2 text-blue-900">Search by budget</div>
         <div class="flex space-x-1">
           <input type="text" placeholder="1000" id="filter_budget" class="text-blue-900 w-[65%] border-gray-500 border-2 rounded-md px-2 focus:outline-none"/>
@@ -414,7 +414,7 @@ function Users() {
      </nav>
     <!-- Header ends -->
     <!-- Users Section starts  -->
-    <div class="h-screen flex items-center justify-center overflow-y-scroll scrollbar-hide py-6">
+    <div class="h-screen flex items-center justify-center overflow-y-scroll scrollbar-hide py-6 pt-24">
         <div id="users-container" class="pt-4 mt-14 space-y-4 pb-14 lg:w-[60%] min-h-screen flex-col items-start justify-start overflow-y-scroll scrollbar-hide">
           
         </div>
@@ -513,7 +513,7 @@ async function usersProfile() {
     
 
 
-
+//function to display post details
 async function PostDetailsPage(){
     // get the current url
     const tokens = window.location.href.split('/');
@@ -808,15 +808,18 @@ function ChatsPage() {
     loadPage(chats);
 }
 
-
 //function for signup
 function signup() {
   const username = document.getElementById('signupUsername').value;
   const password = document.getElementById('signupPassword').value;
   const confirmPassword = document.getElementById('confirmPassword').value;
-
   if (password !== confirmPassword) {
       alert('Password and Confirm Password do not match.');
+      return;
+  }
+  //username already exists
+  if (users.find(user => user.username === username)) {
+      alert('Username already exists. Please choose another username.');
       return;
   }
 
@@ -1656,14 +1659,10 @@ async function sendMessage() {
             body: JSON.stringify({ sender, receiver, data }),
         });
 
-        // Check if response is successful (status code 2xx)
+        // Check if response is successful
         if (response.ok) {
             const message = await response.json();
-            console.log('Message sent:', message);
-            // await getChats();
-            // renderChats(chatsSidebar);
-            // renderMessages(senderMessages, receiverMessages);
-            // alert('Message sent successfully!');
+            alert('Message sent successfully!');
             //clear message field
             document.getElementById('messageField').value = '';            
         } else {
@@ -1672,7 +1671,7 @@ async function sendMessage() {
         }
     } catch (error) {
         console.error('Error sending message:', error);
-        // Handle the error gracefully, e.g., show a user-friendly message
+        // Handle the error 
         alert('Failed to send message. Please try again later.');
     }
 }
@@ -1713,14 +1712,17 @@ async function getTopLocations() {
     }
 }
 
+//function to open form for message
 function openForm() {
     document.getElementById("messageForm").classList.remove("hidden");
 }
 
+//function to close form for message
 function closeForm() {
     document.getElementById("messageForm").classList.add("hidden");
 }
 
+//function to popup message
 function popupMessage(){
     if(document.getElementById('messageField').value === ''){
         alert('Please enter a message');

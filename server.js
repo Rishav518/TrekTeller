@@ -11,7 +11,6 @@ const multer = require('multer');
 
 // Load environment variables from .env file
 dotenv.config();
-
 const app = express();
 
 //Port and student id from env file
@@ -200,7 +199,6 @@ app.post(`/${ID}/newPost`, async (req, res) => {
       budget,
       days,
     } = req.body;
-
     const newPost = new Post({
       posted_by,
       title,
@@ -210,9 +208,7 @@ app.post(`/${ID}/newPost`, async (req, res) => {
       budget,
       days,
     });
-
     const savedPost = await newPost.save();
-
     res.status(201).json(savedPost);
   } catch (error) {
     console.error(error);
@@ -261,6 +257,7 @@ app.put(`/${ID}/updateProfile`, authenticateToken, async (req, res) => {
     }
   });
 
+//route to like a post
 app.post(`/${ID}/likePost`, async (req, res) => {
     try {
       const { postId } = req.body;
@@ -277,6 +274,7 @@ app.post(`/${ID}/likePost`, async (req, res) => {
     }
   });
 
+  //new comment route
 app.post(`/${ID}/newComment`, async (req, res) => {
   try {
     const { postId, username, text } = req.body;
@@ -293,6 +291,7 @@ app.post(`/${ID}/newComment`, async (req, res) => {
   }
 });
 
+//get user posts 
 app.get(`/${ID}/myPosts`, authenticateToken, async (req, res) => {
   try {
     const posts = await Post.find({ posted_by: req.user.username });
@@ -304,6 +303,7 @@ app.get(`/${ID}/myPosts`, authenticateToken, async (req, res) => {
   }
 });
 
+//get all users
 app.get(`/${ID}/users`, authenticateToken, async (req, res) => {
   try {
     // Fetch all user profiles excluding the password
@@ -317,6 +317,7 @@ app.get(`/${ID}/users`, authenticateToken, async (req, res) => {
   }
 });
 
+//get all messages
 app.post(`/${ID}/messages`, (req, res) => {
   const { sender, receiver, data } = req.body;
   const newMessage = new Message({ sender, receiver, data });
@@ -325,6 +326,7 @@ app.post(`/${ID}/messages`, (req, res) => {
     .catch(err => console.log(err));
 });
 
+//get messages of logged in user
 app.get(`/${ID}/chats`, authenticateToken, (req, res) => {
   const { username } = req.user; 
   
@@ -333,6 +335,7 @@ app.get(`/${ID}/chats`, authenticateToken, (req, res) => {
     .catch(err => console.log(err));
 });
 
+//get all locations
 app.get(`/${ID}/allLocations`, async (req, res) => {
     try {
       const uniqueLocations = await Post.distinct('location');
@@ -341,9 +344,8 @@ app.get(`/${ID}/allLocations`, async (req, res) => {
       console.error(err);
       res.status(500).json({ message: 'Server Error' });
     }
-  });
-
-  
+});
+//get 4 top locations
 app.get(`/${ID}/topLocations`, async (req, res) => {
   try {
     const locations = await Post.aggregate([
@@ -357,7 +359,6 @@ app.get(`/${ID}/topLocations`, async (req, res) => {
       { $sort: { postCount: -1 } }, 
       { $limit: 4 } 
     ]);
-
     res.json(locations);
   } catch (err) {
     console.error(err);
@@ -365,13 +366,12 @@ app.get(`/${ID}/topLocations`, async (req, res) => {
   }
 });
 
-
+//get 4 top posts
 app.get(`/${ID}/topPosts`, async (req, res) => {
   try {
-    // Aggregate query to sort posts by number of likes and limit to top 4
     const topPosts = await Post.aggregate([
-      { $sort: { likes: -1 } }, // Sort by likes in descending order
-      { $limit: 4 } // Limit to top 4 posts
+      { $sort: { likes: -1 } }, 
+      { $limit: 4 }
     ]);
 
     res.json(topPosts);
@@ -390,7 +390,7 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
 });
 
-
 app.listen(PORT, async () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+
