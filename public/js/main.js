@@ -210,9 +210,9 @@ async function HomePage() {
   </div>
   
     <footer class="flex items-center justify-between py-2 bg-gradient-to-r from-black via-[#4facf7] to-black text-white px-6">
-    <div>Copyright &copy; Dristi Bhugun</div>
-    <div>MiddleSex University, MRU</div>
-  </footer>
+    <div>Copyright &copy; Rishav Kumar</div>
+    <a href="https://github.com/Rishav518" target="_blank">Github</a>
+    </footer>
   </div>  
     `;
 loadPage(home);
