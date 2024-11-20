@@ -1,0 +1,68 @@
+{
+  "events": [
+    {
+      "event": "call",
+      "http_server_request": {
+        "path_info": "/public/img/uploads/image-1712524154755.jpg",
+        "request_method": "GET",
+        "headers": {
+          "Host": "localhost:3000",
+          "Connection": "keep-alive",
+          "Sec-Ch-Ua": "\"Not/A)Brand\";v=\"8\", \"Chromium\";v=\"126\", \"Google Chrome\";v=\"126\"",
+          "Sec-Ch-Ua-Mobile": "?0",
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+          "Sec-Ch-Ua-Platform": "\"Windows\"",
+          "Accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
+          "Sec-Fetch-Site": "same-origin",
+          "Sec-Fetch-Mode": "no-cors",
+          "Sec-Fetch-Dest": "image",
+          "Referer": "http://localhost:3000/",
+          "Accept-Encoding": "gzip, deflate, br, zstd",
+          "Accept-Language": "en-US,en;q=0.9",
+          "Cookie": "JSESSIONID.66f33408=node0dv5udwvc0b7s1lfthdevzwu0i1.node0; screenResolution=1920x1080; JSESSIONID.8ba06386=node01kip92zpxtfl716lyua07k9mbo1.node0; JSESSIONID.0b838046=node059guxab0u0cffyah6wjm0v2a4.node0; JSESSIONID.7aa3d8db=node0rbinpkdjt4wft1pflephqjgr7.node0; JSESSIONID.78680230=node01anx0nawxrzf816sdno8g6r8ob0.node0; JSESSIONID.b63b423c=node01lo7528v7vblit8fajeio20116.node0; JSESSIONID.b72fac9b=node01qvxiityk89lv1qj6ho4qz2qkz0.node0; next-auth.callback-url=http%3A%2F%2Flocalhost%3A3000%2Fprofile; next-auth.csrf-token=f76ad20c6c82a4b511d7308f0922a3cdf8f2dafe27c9bf56d7f86db3f14d35df%7Ca0105f9f67d338f1e23a8766d9f31840c056dddd014c764bf8c6f49fd67ef1ea",
+          "If-None-Match": "W/\"15eac-18eba64d788\"",
+          "If-Modified-Since": "Sun, 07 Apr 2024 21:09:14 GMT"
+        },
+        "protocol": "HTTP/1.1"
+      },
+      "id": 1,
+      "thread_id": 0
+    },
+    {
+      "event": "return",
+      "thread_id": 0,
+      "parent_id": 1
+    }
+  ],
+  "version": "1.12",
+  "metadata": {
+    "client": {
+      "name": "appmap-node",
+      "version": "2.23.0",
+      "url": "https://github.com/getappmap/appmap-node"
+    },
+    "language": {
+      "name": "javascript",
+      "engine": "Node.js",
+      "version": "v18.17.0"
+    },
+    "app": "node.js-backend",
+    "recorder": {
+      "type": "requests",
+      "name": "requests"
+    },
+    "name": "GET /public/img/uploads/image-1712524733890.jpg (304) — 2024-07-06T08:15:56.830Z"
+  },
+  "classMap": [
+    {
+      "type": "http",
+      "name": "HTTP server requests",
+      "children": [
+        {
+          "type": "route",
+          "name": "GET /public/img/uploads/image-1712524154755.jpg"
+        }
+      ]
+    }
+  ]
+}

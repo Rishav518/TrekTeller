@@ -1,0 +1,48 @@
+[
+  {
+    "name": "node.js-backend",
+    "type": "package",
+    "children": [
+      {
+        "name": "mongodb",
+        "type": "package",
+        "children": [
+          {
+            "type": "class",
+            "name": "users",
+            "children": [
+              {
+                "type": "function",
+                "name": "find",
+                "static": false,
+                "location": "mongodb/users:5"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "class",
+        "name": "server",
+        "children": [
+          {
+            "type": "function",
+            "name": "authenticateToken",
+            "static": true,
+            "location": "server.js:173"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "http",
+    "name": "HTTP server requests",
+    "children": [
+      {
+        "type": "route",
+        "name": "GET /M00846514/users"
+      }
+    ]
+  }
+]

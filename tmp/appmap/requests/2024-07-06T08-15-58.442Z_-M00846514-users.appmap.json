@@ -1,0 +1,195 @@
+{
+  "events": [
+    {
+      "event": "call",
+      "http_server_request": {
+        "path_info": "/M00846514/users",
+        "request_method": "GET",
+        "headers": {
+          "Host": "localhost:3000",
+          "Connection": "keep-alive",
+          "Sec-Ch-Ua": "\"Not/A)Brand\";v=\"8\", \"Chromium\";v=\"126\", \"Google Chrome\";v=\"126\"",
+          "Content-Type": "application/json",
+          "Sec-Ch-Ua-Mobile": "?0",
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ZDcyNmMyMzg2YTE0ZDY3MzIzZDRkNCIsInVzZXJuYW1lIjoiYXJrYXkiLCJpYXQiOjE3MjAyNTM0MzcsImV4cCI6MTcyMDI1NzAzN30.Nnt7OFVMTuVvwKl1ledGfq4uu88-rJssGStI-ddGFF8",
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+          "Sec-Ch-Ua-Platform": "\"Windows\"",
+          "Accept": "*/*",
+          "Sec-Fetch-Site": "same-origin",
+          "Sec-Fetch-Mode": "cors",
+          "Sec-Fetch-Dest": "empty",
+          "Referer": "http://localhost:3000/",
+          "Accept-Encoding": "gzip, deflate, br, zstd",
+          "Accept-Language": "en-US,en;q=0.9",
+          "Cookie": "JSESSIONID.66f33408=node0dv5udwvc0b7s1lfthdevzwu0i1.node0; screenResolution=1920x1080; JSESSIONID.8ba06386=node01kip92zpxtfl716lyua07k9mbo1.node0; JSESSIONID.0b838046=node059guxab0u0cffyah6wjm0v2a4.node0; JSESSIONID.7aa3d8db=node0rbinpkdjt4wft1pflephqjgr7.node0; JSESSIONID.78680230=node01anx0nawxrzf816sdno8g6r8ob0.node0; JSESSIONID.b63b423c=node01lo7528v7vblit8fajeio20116.node0; JSESSIONID.b72fac9b=node01qvxiityk89lv1qj6ho4qz2qkz0.node0; next-auth.callback-url=http%3A%2F%2Flocalhost%3A3000%2Fprofile; next-auth.csrf-token=f76ad20c6c82a4b511d7308f0922a3cdf8f2dafe27c9bf56d7f86db3f14d35df%7Ca0105f9f67d338f1e23a8766d9f31840c056dddd014c764bf8c6f49fd67ef1ea",
+          "If-None-Match": "W/\"7f6-LGRnlXlmvQ3WHduK1GOFBlPN0Jg\""
+        },
+        "protocol": "HTTP/1.1"
+      },
+      "id": 1,
+      "thread_id": 0
+    },
+    {
+      "event": "call",
+      "id": 2,
+      "thread_id": 0,
+      "method_id": "authenticateToken",
+      "static": true,
+      "parameters": [
+        {
+          "class": "IncomingMessage",
+          "value": "[IncomingMessage: GET /M00846514/users]",
+          "object_id": 63,
+          "name": "req"
+        },
+        {
+          "class": "ServerResponse",
+          "value": "[ServerResponse: 200]",
+          "object_id": 64,
+          "name": "res"
+        },
+        {
+          "class": "Function",
+          "value": "[Function: wrapper] {\n  [Symbol(segment)]: TraceSegment {\n    name: 'Nodejs/Middleware/Expressjs/authenticateToken',\n    transaction: [Transaction],\n    attributes: [Attributes],\n    children: [],\n    id: 'a77eebc04a397054',\n    timer: [Timer],\n    internal: false,\n    opaque: false,\n    shim: [WebFrameworkShim],\n    partialName: null,\n    _exclusiveDuration: null,\n    _collect: true,\n    host: null,\n    port: null,\n    state: 'EXTERNAL',\n    async: true,\n    ignore: false\n  },\n  [Symbol(shimWrapped)]: '99d1cee87059dceb',\n  [Symbol(original)]: [Function: boundNext],\n  [Symbol(unwrap)]: [Function: unwrapWrap]\n}",
+          "name": "next"
+        }
+      ],
+      "defined_class": "server",
+      "path": "server.js",
+      "lineno": 173
+    },
+    {
+      "event": "return",
+      "thread_id": 0,
+      "id": 3,
+      "parent_id": 2,
+      "elapsed": 0.003108000004431233
+    },
+    {
+      "event": "call",
+      "id": 4,
+      "thread_id": 0,
+      "method_id": "find",
+      "static": false,
+      "receiver": {
+        "class": "Collection",
+        "value": "[Collection users]",
+        "object_id": 1
+      },
+      "parameters": [
+        {
+          "class": "Object",
+          "properties": [],
+          "value": "{}",
+          "object_id": 65,
+          "name": "filter"
+        },
+        {
+          "class": "Object",
+          "properties": [
+            {
+              "name": "projection",
+              "class": "Object",
+              "properties": [
+                {
+                  "name": "password",
+                  "class": "Number"
+                }
+              ]
+            }
+          ],
+          "value": "{ projection: { password: 0 } }",
+          "object_id": 66,
+          "name": "options"
+        }
+      ],
+      "defined_class": "users",
+      "lineno": 5,
+      "path": "mongodb/users"
+    },
+    {
+      "event": "return",
+      "thread_id": 0,
+      "id": 5,
+      "parent_id": 4,
+      "return_value": {
+        "class": "FindCursor",
+        "value": "[FindCursor test.users]",
+        "object_id": 67
+      },
+      "elapsed": 0.00045690001570619643
+    },
+    {
+      "event": "return",
+      "thread_id": 0,
+      "parent_id": 1
+    }
+  ],
+  "version": "1.12",
+  "metadata": {
+    "client": {
+      "name": "appmap-node",
+      "version": "2.23.0",
+      "url": "https://github.com/getappmap/appmap-node"
+    },
+    "language": {
+      "name": "javascript",
+      "engine": "Node.js",
+      "version": "v18.17.0"
+    },
+    "app": "node.js-backend",
+    "recorder": {
+      "type": "requests",
+      "name": "requests"
+    },
+    "name": "GET /M00846514/users (304) — 2024-07-06T08:15:58.439Z"
+  },
+  "classMap": [
+    {
+      "name": "node.js-backend",
+      "type": "package",
+      "children": [
+        {
+          "name": "mongodb",
+          "type": "package",
+          "children": [
+            {
+              "type": "class",
+              "name": "users",
+              "children": [
+                {
+                  "type": "function",
+                  "name": "find",
+                  "static": false,
+                  "location": "mongodb/users:5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "class",
+          "name": "server",
+          "children": [
+            {
+              "type": "function",
+              "name": "authenticateToken",
+              "static": true,
+              "location": "server.js:173"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "http",
+      "name": "HTTP server requests",
+      "children": [
+        {
+          "type": "route",
+          "name": "GET /M00846514/users"
+        }
+      ]
+    }
+  ]
+}

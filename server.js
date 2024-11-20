@@ -1,3 +1,4 @@
+require('newrelic');
 //variables to import modules
 const express = require('express');
 const mongoose = require('mongoose');
