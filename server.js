@@ -1,4 +1,3 @@
-require('newrelic');
 //variables to import modules
 const express = require('express');
 const mongoose = require('mongoose');
@@ -15,7 +14,7 @@ dotenv.config();
 const app = express();
 
 //Port and student id from env file
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 const ID = process.env.STUDENT_ID;
 
 //connect to mongoDB from env file
