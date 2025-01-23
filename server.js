@@ -381,6 +381,20 @@ app.get(`/${ID}/topPosts`, async (req, res) => {
   }
 });
 
+//delete route to delet a post
+app.delete(`/${ID}/deletePost/:id`, async (req, res) => {
+  try {
+    const post = await Post.findByIdAndDelete(req.params.id);
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+    res.json({ message: 'Post deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 
 app.use(express.static('public'));
 app.use('/public', express.static('public'));
